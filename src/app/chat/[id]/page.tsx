@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, RefObject } from "react";
+import { useEffect, useRef } from "react";
 
 // utils
 import { cn } from "@/lib/utils";
