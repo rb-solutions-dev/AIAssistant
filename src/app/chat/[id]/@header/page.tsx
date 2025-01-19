@@ -5,7 +5,7 @@ import Image from "next/image";
 import useSWR from "swr";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
-import { ChevronLeftIcon, MoreVerticalIcon, Trash2Icon } from "lucide-react";
+import { ChevronLeftIcon, MoreVerticalIcon } from "lucide-react";
 
 // utils
 import useSupabase from "@/lib/supabase.client";
@@ -15,11 +15,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const { id } = useParams();
