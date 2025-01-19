@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 // utils
 import { cn } from "@/lib/utils";
 import useSupabase from "@/lib/supabase.client";
+import { formatTimestamp } from "@/lib/date";
 
 const ChatPage = () => {
   const { id } = useParams();
@@ -58,7 +59,7 @@ const ChatPage = () => {
   return (
     <div className="flex flex-col gap-2 px-4 mt-3">
       <div className="min-h-16" />
-      {data.map(({ role, content, id }) => {
+      {data.map(({ role, content, id, created_at }) => {
         if (content === "") return null;
 
         const isHuman = role === "human";
@@ -75,7 +76,9 @@ const ChatPage = () => {
             <p className={isHuman ? "text-black text-right" : "text-black"}>
               {content}
             </p>
-            <p className="text-xs text-gray-500 text-right pt-1">12:56</p>
+            <p className="text-xs text-gray-500 text-right pt-1">
+              {formatTimestamp(created_at)}
+            </p>
           </div>
         );
       })}
