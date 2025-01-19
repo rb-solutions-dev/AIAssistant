@@ -29,7 +29,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-violet-50 via-violet-50/50 to-gray-100 min-h-screen`}
         >
           <div className="flex flex-col h-screen w-screen relative">
             {children}

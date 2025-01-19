@@ -5,7 +5,7 @@ import Image from "next/image";
 import useSWR from "swr";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
-import { ChevronLeftIcon, Search } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 
 // utils
 import useSupabase from "@/lib/supabase.client";
@@ -72,9 +72,9 @@ const Header = () => {
         />
         <p className="text-lg font-bold ml-1">{assistant.name}</p>
       </div>
-      <button>
+      {/* <button>
         <Search className="w-6 h-6" />
-      </button>
+      </button> */}
     </>
   );
 };

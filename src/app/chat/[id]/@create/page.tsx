@@ -1,12 +1,13 @@
 "use client";
 
-import { Loader, Send } from "lucide-react";
+import { nanoid } from "nanoid";
 import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
 import {
   ChatPromptTemplate,
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
+import { Loader, Send } from "lucide-react";
 import { useSWRConfig } from "swr";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { createRetrievalChain } from "langchain/chains/retrieval";
@@ -59,6 +60,19 @@ const CreateMessage = () => {
   const { mutate } = useSWRConfig();
 
   const supabase = useSupabase();
+  const { data: conversation } = useSWR(
+    `/api/conversations/${id}/info`,
+    async () => {
+      const { data } = await supabase
+        .from("conversations")
+        .select("id")
+        .match({ assistant_id: id })
+        .single();
+
+      return data;
+    }
+  );
+
   const { data: documents, isLoading: isLoadingDocuments } = useSWR(
     "/articulosff.txt",
     async () => {
@@ -73,6 +87,21 @@ const CreateMessage = () => {
   );
 
   const handleSubmit = async ({ message }: { message: string }) => {
+    await supabase.from("messages").insert({
+      role: "human",
+      content: message,
+      conversation_id: conversation!.id,
+    });
+    await mutate(
+      `/api/conversations/${conversation!.id}/messages`,
+      (currentData: { role: string; content: string }[] = []) => {
+        return [
+          ...currentData,
+          { id: nanoid(), role: "human", content: message },
+        ];
+      }
+    );
+
     const docs = await textSplitter.createDocuments([documents]);
 
     const vectorStore = await MemoryVectorStore.fromDocuments(
@@ -128,16 +157,6 @@ const CreateMessage = () => {
       combineDocsChain: questionAnswerChain,
     });
 
-    const { data: conversation, error: conversationError } = await supabase
-      .from("conversations")
-      .select("id")
-      .match({ assistant_id: id })
-      .single();
-
-    if (conversationError) {
-      throw new Error("Error getting conversation");
-    }
-
     const { data, error } = await supabase
       .from("messages")
       .select("*")
@@ -164,17 +183,21 @@ const CreateMessage = () => {
         .join("\n"),
     });
 
-    await supabase.from("messages").insert([
-      { role: "human", content: message, conversation_id: conversation!.id },
-      {
-        role: "system",
-        content: answer.answer,
-        conversation_id: conversation!.id,
-      },
-    ]);
+    await supabase.from("messages").insert({
+      role: "system",
+      content: answer.answer,
+      conversation_id: conversation!.id,
+    });
 
-    // TODO: https://swr.vercel.app/examples/optimistic-ui
-    await mutate(`/api/conversations/${id}/messages`);
+    await mutate(
+      `/api/conversations/${conversation!.id}/messages`,
+      (currentData: { role: string; content: string }[] = []) => {
+        return [
+          ...currentData,
+          { id: nanoid(), role: "system", content: answer.answer },
+        ];
+      }
+    );
 
     form.reset({
       message: "",

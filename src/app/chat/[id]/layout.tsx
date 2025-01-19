@@ -79,7 +79,7 @@ const RootLayout = ({
 
   return (
     <div className="flex flex-col h-screen w-screen relative">
-      <div className="h-16 px-2 bg-white flex justify-between items-center border-b">
+      <div className="h-16 fixed top-0 left-0 right-0 px-2 bg-white flex justify-between items-center border-b z-10">
         {header}
       </div>
       <div className="flex-1">{children}</div>

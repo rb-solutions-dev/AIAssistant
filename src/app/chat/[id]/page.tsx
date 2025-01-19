@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 import { useParams } from "next/navigation";
+import { useEffect, useRef, RefObject } from "react";
 
 // utils
 import { cn } from "@/lib/utils";
@@ -42,9 +43,21 @@ const ChatPage = () => {
       fallbackData: [],
     }
   );
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
+
+  // Auto-scroll when new messages arrive
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col gap-2 px-4 mt-3">
+      <div className="min-h-16" />
       {data.map(({ role, content, id }) => {
         if (content === "") return null;
 
@@ -54,7 +67,8 @@ const ChatPage = () => {
             key={id}
             className={cn(
               `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
-              isHuman ? "bg-green-200 self-end" : "bg-white self-start"
+              isHuman ? "bg-green-200 self-end" : "bg-white self-start",
+              content === "Thinking..." ? "bg-gray-200 animate-pulse" : ""
             )}
           >
             {/* Chat content */}
@@ -65,6 +79,7 @@ const ChatPage = () => {
           </div>
         );
       })}
+      <div className="min-h-28" ref={lastMessageRef} />
     </div>
   );
 };
