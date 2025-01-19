@@ -5,10 +5,21 @@ import Image from "next/image";
 import useSWR from "swr";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, MoreVerticalIcon, Trash2Icon } from "lucide-react";
 
 // utils
 import useSupabase from "@/lib/supabase.client";
+
+// components
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const { id } = useParams();
@@ -72,9 +83,16 @@ const Header = () => {
         />
         <p className="text-lg font-bold ml-1">{assistant.name}</p>
       </div>
-      {/* <button>
-        <Search className="w-6 h-6" />
-      </button> */}
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreVerticalIcon className="w-6 h-6" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="mr-4">
+            <DropdownMenuItem disabled>Limpiar Chat</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </>
   );
 };

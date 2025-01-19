@@ -82,7 +82,7 @@ const ChatPage = () => {
           </div>
         );
       })}
-      <div className="min-h-28" ref={lastMessageRef} />
+      <div className="min-h-28 sm:min-h-48" ref={lastMessageRef} />
     </div>
   );
 };
