@@ -30,6 +30,7 @@ enum Role {
 }
 
 type ChatMessage = {
+  id: string;
   role: Role;
   content: string;
 };
@@ -145,6 +146,8 @@ const CreateMessage = () => {
       content: message,
       conversation_id: conversation!.id,
     });
+
+    const answerId = nanoid();
     await mutate(
       `/api/conversations/${conversation!.id}/messages`,
       (currentData: { role: string; content: string }[] = []) => {
@@ -156,7 +159,16 @@ const CreateMessage = () => {
             content: message,
             created_at: new Date().toISOString(),
           },
+          {
+            id: answerId,
+            role: Role.System,
+            content: "ANSWER_PLACEHOLDER",
+            created_at: new Date().toISOString(),
+          },
         ];
+      },
+      {
+        revalidate: false,
       }
     );
     form.reset({
@@ -172,13 +184,14 @@ const CreateMessage = () => {
 
     if (error || !data || data.length === 0) {
       chatHistory = [
-        { role: Role.Human, content: "" },
-        { role: Role.System, content: "" },
+        { role: Role.Human, content: "", id: nanoid() },
+        { role: Role.System, content: "", id: nanoid() },
       ];
     } else {
-      chatHistory = data.map(({ role, content }) => ({
+      chatHistory = data.map(({ role, content, id }) => ({
         role: role as Role,
         content,
+        id,
       }));
     }
 
@@ -189,24 +202,30 @@ const CreateMessage = () => {
         .join("\n"),
     });
 
-    await supabase.from("messages").insert({
-      role: Role.System,
-      content: answer.answer,
-      conversation_id: conversation!.id,
-    });
+    const { data: newMessageAnswerOnDB } = await supabase
+      .from("messages")
+      .insert({
+        role: Role.System,
+        content: answer.answer,
+        conversation_id: conversation!.id,
+      })
+      .select("id, content, created_at")
+      .single();
 
     await mutate(
       `/api/conversations/${conversation!.id}/messages`,
       (currentData: ChatMessage[] = []) => {
-        return [
-          ...currentData,
-          {
-            id: nanoid(),
-            role: Role.System,
-            content: answer.answer,
-            created_at: new Date().toISOString(),
-          },
-        ];
+        return currentData.map((message) => {
+          if (message.id === answerId) {
+            return {
+              ...message,
+              id: newMessageAnswerOnDB?.id,
+              content: newMessageAnswerOnDB?.content,
+              created_at: newMessageAnswerOnDB?.created_at,
+            };
+          }
+          return message;
+        });
       }
     );
 

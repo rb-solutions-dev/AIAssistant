@@ -46,7 +46,6 @@ const ChatPage = () => {
   );
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
-  // Auto-scroll when new messages arrive
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
@@ -69,12 +68,15 @@ const ChatPage = () => {
             className={cn(
               `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
               isHuman ? "bg-green-200 self-end" : "bg-white self-start",
-              content === "Thinking..." ? "bg-gray-200 animate-pulse" : ""
+              content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
+              content === "ANSWER_PLACEHOLDER"
+                ? "bg-gray-200 animate-pulse"
+                : ""
             )}
           >
             {/* Chat content */}
             <p className={isHuman ? "text-black text-right" : "text-black"}>
-              {content}
+              {content === "ANSWER_PLACEHOLDER" ? "..." : content}
             </p>
             <p className="text-xs text-gray-500 text-right pt-1">
               {formatTimestamp(created_at)}

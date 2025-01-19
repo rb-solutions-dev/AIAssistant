@@ -5,6 +5,7 @@ import Image from "next/image";
 import useSWR from "swr";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
+import useSWRMutation from "swr/mutation";
 import { ChevronLeftIcon, MoreVerticalIcon } from "lucide-react";
 
 // utils
@@ -24,7 +25,6 @@ const Header = () => {
   const { isSignedIn } = useUser();
 
   const apiKey = isSignedIn ? "/api/conversations" : null;
-
   const { data } = useSWR(
     apiKey,
     async () => {
@@ -63,6 +63,16 @@ const Header = () => {
     avatar_url: string;
   };
 
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/conversations/${conversation.id}/messages`,
+    async () => {
+      await supabase
+        .from("messages")
+        .delete()
+        .eq("conversation_id", conversation!.id);
+    }
+  );
+
   return (
     <>
       <div className="flex flex-row items-center gap-2">
@@ -86,7 +96,14 @@ const Header = () => {
             <MoreVerticalIcon className="w-6 h-6" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-4">
-            <DropdownMenuItem disabled>Limpiar Chat</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                trigger();
+              }}
+              disabled={isMutating}
+            >
+              Limpiar Chat
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
