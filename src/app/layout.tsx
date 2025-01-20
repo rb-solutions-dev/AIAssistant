@@ -2,6 +2,10 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+// components
+import MobileNavbar from "@/components/MobileNavbar";
+import { ThemeProvider } from "@/components/theme-provider";
+
 // interfaces
 import type { Metadata } from "next";
 
@@ -27,13 +31,22 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
+        <head />
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-violet-50 via-violet-50/50 to-gray-100 min-h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <div className="flex flex-col h-screen w-screen relative">
-            {children}
-          </div>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex flex-col h-screen w-screen relative bg-background">
+              {children}
+              <MobileNavbar />
+            </div>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

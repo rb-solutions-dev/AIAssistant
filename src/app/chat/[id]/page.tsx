@@ -67,7 +67,9 @@ const ChatPage = () => {
             key={id}
             className={cn(
               `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
-              isHuman ? "bg-green-200 self-end" : "bg-white self-start",
+              isHuman
+                ? "bg-green-200 dark:bg-green-800 self-end"
+                : "bg-white dark:bg-gray-700  self-start",
               content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
               content === "ANSWER_PLACEHOLDER"
                 ? "bg-gray-200 animate-pulse"
@@ -75,10 +77,17 @@ const ChatPage = () => {
             )}
           >
             {/* Chat content */}
-            <p className={isHuman ? "text-black text-right" : "text-black"}>
+            <p
+              className={cn(
+                isHuman
+                  ? "text-black dark:text-white text-right"
+                  : "text-black",
+                "dark:text-white"
+              )}
+            >
               {content === "ANSWER_PLACEHOLDER" ? "..." : content}
             </p>
-            <p className="text-xs text-gray-500 text-right pt-1">
+            <p className="text-xs text-foreground text-right pt-1">
               {formatTimestamp(created_at)}
             </p>
           </div>
