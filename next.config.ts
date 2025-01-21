@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["picsum.photos"],
+    domains: ["cdn-icons-png.flaticon.com", "nretnil.com", "gravatar.com"],
   },
 };
 
