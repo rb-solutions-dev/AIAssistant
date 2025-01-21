@@ -10,6 +10,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        morena: {
+          DEFAULT: "#A41E22",
+          dark: "#8B181B",
+          light: "#C72A2D",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

@@ -73,7 +73,7 @@ const ChatsList = () => {
                 alt={chatData.assistants.name}
                 width={64}
                 height={64}
-                className="rounded-full dark:bg-red-800 bg-red-500 p-1 w-16 h-16"
+                className="rounded-full morena-image w-16 h-16"
               />
               <div className="flex flex-col">
                 <p className="text-sm font-medium">

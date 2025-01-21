@@ -86,7 +86,7 @@ const Header = () => {
           alt={assistant.name}
           width={24}
           height={24}
-          className="rounded-full"
+          className="rounded-full morena-image"
         />
         <p className="text-lg font-bold ml-1">{assistant.name}</p>
       </div>

@@ -66,7 +66,7 @@ const AssistantCarrousel = () => {
                   alt={assistant.name}
                   width={64}
                   height={64}
-                  className="rounded-full dark:bg-red-800 bg-red-500 p-1"
+                  className="rounded-full morena-image"
                 />
                 <p className="text-sm font-medium">{assistant.name}</p>
               </CarouselItem>

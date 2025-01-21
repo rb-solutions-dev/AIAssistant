@@ -165,7 +165,7 @@ const SettingSheet = () => {
       }}
     >
       <SheetTrigger>
-        <Settings className="w-4 h-4" />
+        <Settings className="w-6 h-6" />
       </SheetTrigger>
       <SheetContent className="w-full overflow-auto">
         <SheetHeader>

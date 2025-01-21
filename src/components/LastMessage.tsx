@@ -75,7 +75,7 @@ const LastMessage = () => {
           alt={message.conversations.assistants.name}
           width={64}
           height={64}
-          className="rounded-full min-w-16 dark:bg-red-800 bg-red-500 p-1"
+          className="rounded-full morena-image min-w-16"
         />
 
         <p className="text-primary text-lg flex-1">
@@ -87,7 +87,10 @@ const LastMessage = () => {
 
       <Link
         href={`/chat/${message.conversations.assistants.id}`}
-        className={cn(buttonVariants({ variant: "outline" }), "w-full mt-4")}
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          "w-full mt-4 bg-morena"
+        )}
       >
         Seguir conversación
       </Link>
