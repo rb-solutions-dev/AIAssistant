@@ -52,7 +52,6 @@ const LastMessage = () => {
           )
         `
         )
-        .eq("role", "human") // Using `eq` instead of `match` for better clarity
         .order("created_at", { ascending: false })
         .limit(1)
         .single(); // Fetch a single result directly
