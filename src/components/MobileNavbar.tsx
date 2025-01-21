@@ -20,25 +20,28 @@ const MobileNavbar = () => {
             name: "Inicio",
             href: "/",
             icon: Home,
+            active: pathname === "/",
           },
           {
             name: "Chats",
             href: "/chats",
             icon: MessageCircle,
+            active: pathname.includes("/chat"),
           },
           {
             name: "Herramientas",
             href: "/tools",
             icon: Hammer,
+            active: pathname.includes("/tools"),
           },
-        ].map(({ name, href, icon: Icon }) => (
+        ].map(({ name, href, icon: Icon, active }) => (
           <Link
             key={name}
             href={href}
             className={cn(
               "flex flex-col items-center justify-center gap-1 transition-all",
               "text-muted-foreground hover:text-foreground",
-              pathname === href && "text-foreground font-semibold"
+              active && "text-foreground font-semibold"
             )}
           >
             <Icon className="w-6 h-6" />

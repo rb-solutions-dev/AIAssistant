@@ -55,7 +55,7 @@ const AssistantCarrousel = () => {
             assistant ? (
               <CarouselItem
                 key={assistant.id}
-                className="basis-1/3 items-center justify-center flex flex-col gap-2 relative text-center"
+                className="basis-1/2 items-center justify-center flex flex-col gap-2 relative text-center"
               >
                 <Link
                   href={`/chat/${assistant.id}`}
