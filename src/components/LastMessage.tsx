@@ -10,18 +10,22 @@ import useSupabase from "@/lib/supabase.client";
 // components
 import { buttonVariants } from "./ui/button";
 
+interface Assistant {
+  id: number;
+  name: string;
+  avatar_url: string;
+}
+
+interface Conversation {
+  id: number;
+  assistants: Assistant;
+}
+
 interface LastMessage {
   id: number;
   content: string;
   created_at: string;
-  conversations: {
-    id: number;
-    assistants: {
-      id: number;
-      name: string;
-      avatar_url: string;
-    };
-  };
+  conversations: Conversation;
 }
 
 const LastMessage = () => {
@@ -48,15 +52,12 @@ const LastMessage = () => {
           )
         `
         )
-        .match({
-          role: "human",
-        })
+        .eq("role", "human") // Using `eq` instead of `match` for better clarity
         .order("created_at", { ascending: false })
-        .limit(1);
+        .limit(1)
+        .single(); // Fetch a single result directly
 
-      if (!data) return null;
-
-      return data[0];
+      return data || null;
     },
     {
       fallbackData: null,
@@ -66,25 +67,26 @@ const LastMessage = () => {
   if (isLoading || !data) return null;
 
   const message = data as unknown as LastMessage;
-
   return (
     <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
       <div className="flex flex-row items-center justify-between gap-4">
         <Image
-          src={message?.conversations.assistants.avatar_url}
-          alt={message?.conversations.assistants.name}
+          src={message.conversations.assistants.avatar_url}
+          alt={message.conversations.assistants.name}
           width={64}
           height={64}
           className="rounded-full min-w-16 dark:bg-red-800 bg-red-500 p-1"
         />
 
         <p className="text-primary text-lg flex-1">
-          {message?.content.slice(0, 120)}
-          {message?.content.length > 120 && "..."}
+          {message.content.length > 120
+            ? `${message.content.slice(0, 120).trim()}...`
+            : message.content}
         </p>
       </div>
+
       <Link
-        href={`/chat/${message?.conversations.assistants.id}`}
+        href={`/chat/${message.conversations.assistants.id}`}
         className={cn(buttonVariants({ variant: "outline" }), "w-full mt-4")}
       >
         Seguir conversación

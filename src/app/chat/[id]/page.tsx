@@ -49,7 +49,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
-        behavior: "smooth",
+        behavior: "instant",
         block: "end",
       });
     }
@@ -93,7 +93,7 @@ const ChatPage = () => {
           </div>
         );
       })}
-      <div className="min-h-28 sm:min-h-48" ref={lastMessageRef} />
+      <div className="pb-28" ref={lastMessageRef} />
     </div>
   );
 };

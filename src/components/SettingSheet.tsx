@@ -16,7 +16,14 @@ import {
   User2Icon,
 } from "lucide-react";
 
+// lib
+import { cn } from "@/lib/utils";
+
 // components
+import Privacy from "./Privacy";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Button } from "./ui/button";
 import {
   Sheet,
   SheetContent,
@@ -24,11 +31,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Privacy from "./Privacy";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
 
 enum View {
   Cuenta = "Cuenta",
@@ -165,7 +167,7 @@ const SettingSheet = () => {
       <SheetTrigger>
         <Settings className="w-4 h-4" />
       </SheetTrigger>
-      <SheetContent className="w-full">
+      <SheetContent className="w-full overflow-auto">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2 text-accent-foreground justify-center">
             {selectedItem?.icon}
