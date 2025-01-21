@@ -62,6 +62,7 @@ const ChatPage = () => {
         if (content === "") return null;
 
         const isHuman = role === "human";
+        const isLastMessage = id === data[data.length - 1].id;
         return (
           <Fragment key={id}>
             <div
@@ -73,7 +74,8 @@ const ChatPage = () => {
                 content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
                 content === "ANSWER_PLACEHOLDER"
                   ? "bg-gray-200 animate-pulse"
-                  : ""
+                  : "",
+                isLastMessage && "mb-6"
               )}
             >
               <p
