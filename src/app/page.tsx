@@ -6,6 +6,7 @@ import { PlusSquareIcon } from "lucide-react";
 import LastMessage from "@/components/LastMessage";
 import SettingSheet from "@/components/SettingSheet";
 import AssistantCarrousel from "@/components/AssistantCarrousel";
+import InstallPWA from "@/components/InstallPWA";
 
 const HomePage = () => {
   return (
@@ -13,7 +14,9 @@ const HomePage = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-extrabold">Bienvenido!</h1>
 
-        <div>
+        <div className="flex items-center gap-2">
+          <InstallPWA />
+
           <SettingSheet />
         </div>
       </div>
@@ -65,6 +68,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+      <div className="pb-20"></div>
     </div>
   );
 };

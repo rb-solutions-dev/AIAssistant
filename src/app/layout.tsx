@@ -44,7 +44,7 @@ export default function RootLayout({
           >
             <div className="flex flex-col h-screen w-screen relative bg-background">
               {children}
-              <div className="h-20"></div>
+
               <MobileNavbar />
             </div>
           </ThemeProvider>

@@ -88,7 +88,7 @@ const LastMessage = () => {
         href={`/chat/${message.conversations.assistants.id}`}
         className={cn(
           buttonVariants({ variant: "outline" }),
-          "w-full mt-4 bg-morena"
+          "w-full mt-4 bg-morena text-white"
         )}
       >
         Seguir conversación
