@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 import { useParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 
 // utils
 import { cn } from "@/lib/utils";
@@ -49,51 +49,52 @@ const ChatPage = () => {
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
-        behavior: "instant",
+        behavior: "auto",
         block: "end",
+        inline: "nearest",
       });
     }
   }, [data]);
 
   return (
-    <div className="flex flex-col gap-2 px-4 mt-3">
-      <div className="min-h-16" />
+    <div className="flex flex-col gap-2 px-4 mt-3 pt-16 overflow-y-auto max-h-[calc(100vh-136px)]">
       {data.map(({ role, content, id, created_at }) => {
         if (content === "") return null;
 
         const isHuman = role === "human";
         return (
-          <div
-            key={id}
-            className={cn(
-              `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
-              isHuman
-                ? "bg-green-200 dark:bg-green-800 self-end"
-                : "bg-white dark:bg-gray-700  self-start",
-              content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
-              content === "ANSWER_PLACEHOLDER"
-                ? "bg-gray-200 animate-pulse"
-                : ""
-            )}
-          >
-            {/* Chat content */}
-            <p
+          <Fragment key={id}>
+            <div
               className={cn(
+                `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
                 isHuman
-                  ? "text-black dark:text-white text-right"
-                  : "text-black",
-                "dark:text-white"
+                  ? "bg-green-200 dark:bg-green-800 self-end"
+                  : "bg-white dark:bg-gray-700  self-start",
+                content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
+                content === "ANSWER_PLACEHOLDER"
+                  ? "bg-gray-200 animate-pulse"
+                  : ""
               )}
             >
-              {content === "ANSWER_PLACEHOLDER" ? "..." : content}
-            </p>
-            <p className="text-xs text-foreground text-right pt-1">
-              {formatTimestamp(created_at)}
-            </p>
-          </div>
+              <p
+                className={cn(
+                  isHuman
+                    ? "text-black dark:text-white text-right"
+                    : "text-black",
+                  "dark:text-white"
+                )}
+              >
+                {content === "ANSWER_PLACEHOLDER" ? "..." : content}
+              </p>
+              <p className="text-xs text-foreground text-right pt-1">
+                {formatTimestamp(created_at)}
+              </p>
+            </div>
+          </Fragment>
         );
       })}
-      <div className="pb-28" ref={lastMessageRef} />
+
+      <div ref={lastMessageRef} className="h-4" />
     </div>
   );
 };

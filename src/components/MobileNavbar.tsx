@@ -12,10 +12,8 @@ const MobileNavbar = () => {
   const pathname = usePathname();
   const { isLoaded } = useUser();
 
-  if (pathname.includes("/chat/")) return null;
-
   return (
-    <div className="fixed bottom-0 right-0 border-t bg-background w-full z-10">
+    <div className="fixed bottom-0 right-0 border-t bg-background w-full z-10 max-h-20 min-h-20">
       <div className="flex justify-around py-3">
         {[
           {

@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
 import useSWRMutation from "swr/mutation";
-import { ChevronLeftIcon, MoreVerticalIcon } from "lucide-react";
+import { ChevronLeftIcon, Dot, MoreVerticalIcon } from "lucide-react";
 
 // utils
 import useSupabase from "@/lib/supabase.client";
@@ -75,7 +75,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row items-center">
         <button className="relative">
           <Link href="/" className="">
             <ChevronLeftIcon className="w-6 h-6" />
@@ -86,9 +86,11 @@ const Header = () => {
           alt={assistant.name}
           width={24}
           height={24}
-          className="rounded-full morena-image"
+          className="rounded-full morena-image w-10 h-10"
         />
-        <p className="font-bold ml-1">{assistant.name}</p>
+
+        <p className="font-bold ml-2">{assistant.name}</p>
+        <Dot className="w-10 h-10 text-green-500" />
       </div>
       <div>
         <DropdownMenu>

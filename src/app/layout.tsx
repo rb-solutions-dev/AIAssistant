@@ -42,8 +42,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex flex-col h-screen w-screen relative bg-background mb-24">
+            <div className="flex flex-col h-screen w-screen relative bg-background">
               {children}
+              <div className="h-20"></div>
               <MobileNavbar />
             </div>
           </ThemeProvider>
