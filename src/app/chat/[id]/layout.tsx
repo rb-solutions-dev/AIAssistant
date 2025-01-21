@@ -30,9 +30,18 @@ const RootLayout = ({
       .select("id")
       .single();
 
+    const { data: assistant } = await supabase
+      .from("assistants")
+      .select("name")
+      .eq("id", id)
+      .single();
+
     await supabase.from("messages").insert([
-      { role: "human", content: "", conversation_id: data!.id },
-      { role: "system", content: "", conversation_id: data!.id },
+      {
+        role: "system",
+        content: `Hola, soy ${assistant!.name}. ¿En qué te puedo ayudar?`,
+        conversation_id: data!.id,
+      },
     ]);
 
     return data;
