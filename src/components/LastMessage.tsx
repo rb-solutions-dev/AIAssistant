@@ -77,7 +77,7 @@ const LastMessage = () => {
           className="rounded-full morena-image min-w-16"
         />
 
-        <p className="text-primary text-lg flex-1">
+        <p className="text-primary flex-1">
           {message.content.length > 120
             ? `${message.content.slice(0, 120).trim()}...`
             : message.content}

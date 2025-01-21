@@ -88,7 +88,7 @@ const Header = () => {
           height={24}
           className="rounded-full morena-image"
         />
-        <p className="text-lg font-bold ml-1">{assistant.name}</p>
+        <p className="font-bold ml-1">{assistant.name}</p>
       </div>
       <div>
         <DropdownMenu>
