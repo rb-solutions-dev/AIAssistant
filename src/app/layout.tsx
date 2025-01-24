@@ -23,6 +23,7 @@ const geistMono = Geist_Mono({
 
 const appURL = "https://ai-assistant-mu-sepia.vercel.app/";
 export const metadata: Metadata = {
+  metadataBase: new URL(appURL),
   title: "LexIA - AI Chatbot",
   description:
     "LexIA is an intelligent AI chatbot that helps you with real-time conversations, productivity, and insights.",

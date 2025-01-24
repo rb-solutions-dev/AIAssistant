@@ -23,13 +23,14 @@ import { useToast } from "@/hooks/use-toast";
 
 // lib
 import { cn } from "@/lib/utils";
+import useSupabase from "@/lib/supabase.client";
 
 // components
 import Privacy from "./Privacy";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import useSupabase from "@/lib/supabase.client";
+import PushNotificationManager from "./PushNotification";
 import {
   Sheet,
   SheetContent,
@@ -117,7 +118,7 @@ const SettingSheet = () => {
               <div
                 key={theme.value}
                 className={cn(
-                  `flex items-center gap-2 h-16 rounded-md px-2 py-1 hover:bg-gray-100 cursor-pointer bg-accent relative dark:hover:bg-gray-800`,
+                  `flex items-center gap-2 h-16 rounded-md px-2 py-1 cursor-pointer bg-accent relative`,
                   theme.value === currentTheme
                     ? "bg-accent border-2 border-accent-foreground"
                     : "bg-accent"
@@ -207,7 +208,7 @@ const SettingSheet = () => {
               {items.map((item) => (
                 <div
                   key={item.view}
-                  className="flex items-center gap-2 h-16 rounded-md px-2 py-1 hover:bg-gray-100 cursor-pointer bg-accent relative"
+                  className="flex items-center gap-2 h-16 rounded-md px-2 py-1 hover:bg-accent/40 cursor-pointer bg-accent relative"
                 >
                   <button
                     className="absolute inset-0"
@@ -237,6 +238,8 @@ const SettingSheet = () => {
                 )}
                 Borrar Historial
               </Button>
+
+              <PushNotificationManager />
             </>
           </div>
         ) : (
