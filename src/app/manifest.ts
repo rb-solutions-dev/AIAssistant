@@ -50,6 +50,13 @@ export default function manifest(): MetadataRoute.Manifest {
         form_factor: "wide",
         label: "Application",
       },
+      {
+        src: "/icons/ios/512.png",
+        sizes: "512x512",
+        type: "image/png",
+        form_factor: "narrow",
+        label: "Application",
+      },
     ],
     scope: "/",
     orientation: "portrait-primary",
