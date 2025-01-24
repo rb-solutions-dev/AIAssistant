@@ -12,32 +12,32 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#000000",
     icons: [
       {
-        src: "/ios/72.png",
+        src: "/icons/ios/72.png",
         sizes: "72x72",
         type: "image/png",
       },
       {
-        src: "/ios/128.png",
+        src: "/icons/ios/128.png",
         sizes: "128x128",
         type: "image/png",
       },
       {
-        src: "/ios/144.png",
+        src: "/icons/ios/144.png",
         sizes: "144x144",
         type: "image/png",
       },
       {
-        src: "/ios/152.png",
+        src: "/icons/ios/152.png",
         sizes: "152x152",
         type: "image/png",
       },
       {
-        src: "/ios/192.png",
+        src: "/icons/ios/192.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/ios/512.png",
+        src: "/icons/ios/512.png",
         sizes: "512x512",
         type: "image/png",
       },
