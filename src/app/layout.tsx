@@ -21,9 +21,34 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const appURL = "https://ai-assistant-mu-sepia.vercel.app/";
 export const metadata: Metadata = {
-  title: "Chatbot",
-  description: "Chatbot",
+  title: "LexIA - AI Chatbot",
+  description:
+    "LexIA is an intelligent AI chatbot that helps you with real-time conversations, productivity, and insights.",
+  openGraph: {
+    title: "LexIA - AI Chatbot",
+    description:
+      "LexIA is an intelligent AI chatbot that helps you with real-time conversations, productivity, and insights.",
+    url: appURL,
+    siteName: "LexIA",
+    images: [
+      {
+        url: "/icons/ios/1024.png", // Make sure this file exists in `/public`
+        width: 1024,
+        height: 1024,
+        alt: "LexIA Logo",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LexIA - AI Chatbot",
+    description:
+      "LexIA is an intelligent AI chatbot that helps you with real-time conversations, productivity, and insights.",
+    images: ["/icons/ios/1024.png"],
+  },
 };
 
 export default function RootLayout({

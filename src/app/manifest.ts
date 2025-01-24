@@ -42,6 +42,15 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
     ],
+    screenshots: [
+      {
+        src: "/icons/ios/1024.png",
+        sizes: "1024x1024",
+        type: "image/png",
+        form_factor: "wide",
+        label: "Application",
+      },
+    ],
     scope: "/",
     orientation: "portrait-primary",
     id: "/",
