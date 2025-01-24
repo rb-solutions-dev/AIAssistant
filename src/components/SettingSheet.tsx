@@ -4,6 +4,8 @@ import { useTheme } from "next-themes";
 import {
   ArrowLeftIcon,
   ChevronRightIcon,
+  DownloadIcon,
+  Loader2Icon,
   LockIcon,
   MailIcon,
   MessageCircleIcon,
@@ -13,8 +15,12 @@ import {
   Settings,
   SunIcon,
   SunMoonIcon,
+  TrashIcon,
   User2Icon,
 } from "lucide-react";
+
+// hooks
+import { useToast } from "@/hooks/use-toast";
 
 // lib
 import { cn } from "@/lib/utils";
@@ -24,6 +30,8 @@ import Privacy from "./Privacy";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import InstallPWA from "./InstallPWA";
+import useSupabase from "@/lib/supabase.client";
 import {
   Sheet,
   SheetContent,
@@ -64,8 +72,12 @@ const items = [
 
 const SettingSheet = () => {
   const [view, setView] = useState<View | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { user } = useUser();
   const { setTheme, theme: currentTheme } = useTheme();
+
+  const { toast } = useToast();
+  const supabase = useSupabase();
 
   const renderView = (view: View) => {
     switch (view) {
@@ -155,6 +167,22 @@ const SettingSheet = () => {
     }
   };
 
+  const handleDeleteHistory = async () => {
+    setIsDeleting(true);
+    try {
+      await supabase.from("conversations").delete().eq("user_id", user?.id);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error al borrar historial",
+        variant: "destructive",
+        description: "Por favor, intenta nuevamente",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const selectedItem = items.find((item) => item.view === view);
   return (
     <Sheet
@@ -177,25 +205,41 @@ const SettingSheet = () => {
 
         {view === null ? (
           <div className="mt-2 flex flex-col gap-2">
-            {items.map((item) => (
-              <div
-                key={item.view}
-                className="flex items-center gap-2 h-16 rounded-md px-2 py-1 hover:bg-gray-100 cursor-pointer bg-accent relative"
-              >
-                <button
-                  className="absolute inset-0"
-                  onClick={() => setView(item.view)}
-                />
-                <div className="flex items-center gap-3">
-                  <div className="text-accent-foreground">{item.icon}</div>
-                  <div className="text-accent-foreground">{item.label}</div>
-                </div>
+            <>
+              {items.map((item) => (
+                <div
+                  key={item.view}
+                  className="flex items-center gap-2 h-16 rounded-md px-2 py-1 hover:bg-gray-100 cursor-pointer bg-accent relative"
+                >
+                  <button
+                    className="absolute inset-0"
+                    onClick={() => setView(item.view)}
+                  />
+                  <div className="flex items-center gap-3">
+                    <div className="text-accent-foreground">{item.icon}</div>
+                    <div className="text-accent-foreground">{item.label}</div>
+                  </div>
 
-                <div className="ml-auto">
-                  <ChevronRightIcon className="w-4 h-4" />
+                  <div className="ml-auto">
+                    <ChevronRightIcon className="w-4 h-4" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+
+              <Button
+                variant="outline"
+                className="p-2 bg-red-500"
+                onClick={handleDeleteHistory}
+                disabled={isDeleting}
+              >
+                {isDeleting ? (
+                  <Loader2Icon className="w-4 h-4 animate-spin" />
+                ) : (
+                  <TrashIcon className="w-4 h-4" />
+                )}
+                Borrar Historial
+              </Button>
+            </>
           </div>
         ) : (
           <div className="mt-2">

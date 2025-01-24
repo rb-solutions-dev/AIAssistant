@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 // components
+import { Toaster } from "@/components/ui/toaster";
 import MobileNavbar from "@/components/MobileNavbar";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
 
               <MobileNavbar />
             </div>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

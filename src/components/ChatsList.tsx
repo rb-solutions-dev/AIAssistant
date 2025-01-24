@@ -57,6 +57,12 @@ const ChatsList = () => {
     }
   );
 
+  const userHaveChats = data.filter((chat) => chat.messages.length > 0);
+
+  if (userHaveChats.length === 0) {
+    return null;
+  }
+
   return (
     <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
       <div className="flex justify-between items-center">
@@ -66,6 +72,8 @@ const ChatsList = () => {
       <div className="flex flex-col gap-4 mt-4 ">
         {data.map((chat) => {
           const chatData = chat as unknown as Chat;
+
+          if (chatData.messages.length === 0) return null;
           return (
             <div key={chatData.id} className="flex flex-row gap-2 items-center">
               <Image

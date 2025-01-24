@@ -25,20 +25,23 @@ interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
 }
 
-const DISMISS_KEY = "pwa_install_dismissed";
-
-const InstallPWA: React.FC = () => {
+interface Props {
+  trigger?: React.ReactNode;
+}
+const InstallPWA = ({
+  trigger = (
+    <Button variant="ghost" className="p-2">
+      <DownloadIcon className="w-6 h-6" />
+    </Button>
+  ),
+}: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [supportsPWA, setSupportsPWA] = useState<boolean>(false);
   const [promptInstall, setPromptInstall] =
     useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
-    const dismissed = localStorage.getItem(DISMISS_KEY);
-    if (dismissed === "true") return; // Don't show if previously dismissed
-
     const handler = (event: BeforeInstallPromptEvent) => {
-      event.preventDefault();
       setSupportsPWA(true);
       setPromptInstall(event);
     };
@@ -62,20 +65,11 @@ const InstallPWA: React.FC = () => {
     setOpen(false);
   };
 
-  const handleNeverShowAgain = () => {
-    localStorage.setItem(DISMISS_KEY, "true");
-    setOpen(false);
-  };
-
   if (!supportsPWA) return null;
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="p-2">
-          <DownloadIcon className="w-6 h-6" />
-        </Button>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Instalar aplicación</AlertDialogTitle>
@@ -85,9 +79,6 @@ const InstallPWA: React.FC = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex flex-col gap-2 sm:flex-row">
-          <Button variant="outline" onClick={handleNeverShowAgain}>
-            No volver a mostrar
-          </Button>
           <Button variant="outline" onClick={handleDismiss}>
             Seguir usando en el navegador
           </Button>
