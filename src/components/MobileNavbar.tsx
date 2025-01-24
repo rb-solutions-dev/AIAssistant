@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { dark } from "@clerk/themes";
+import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Hammer, Home, Loader, MessageCircle } from "lucide-react";
@@ -9,6 +11,7 @@ import { Hammer, Home, Loader, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MobileNavbar = () => {
+  const { theme } = useTheme();
   const pathname = usePathname();
   const { isLoaded } = useUser();
 
@@ -50,7 +53,12 @@ const MobileNavbar = () => {
         ))}
         <div className="flex flex-col items-center justify-center gap-1 transition-all">
           {isLoaded ? (
-            <UserButton />
+            <UserButton
+              key={theme}
+              appearance={{
+                baseTheme: theme === "dark" ? dark : undefined,
+              }}
+            />
           ) : (
             <Loader className="w-6 h-6 animate-spin" />
           )}

@@ -228,7 +228,7 @@ const SettingSheet = () => {
 
               <Button
                 variant="outline"
-                className="p-2 bg-red-500"
+                className="p-2 bg-red-500 text-white"
                 onClick={handleDeleteHistory}
                 disabled={isDeleting}
               >

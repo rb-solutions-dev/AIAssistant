@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 // interfaces
 import type { Metadata } from "next";
+import { dark } from "@clerk/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en" suppressHydrationWarning>
         <head />
         <body
@@ -46,6 +47,7 @@ export default function RootLayout({
             <div className="flex flex-col h-screen w-screen relative bg-background">
               {children}
 
+              <div className="pb-20" />
               <MobileNavbar />
             </div>
             <Toaster />
