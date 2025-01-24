@@ -4,7 +4,6 @@ import { useTheme } from "next-themes";
 import {
   ArrowLeftIcon,
   ChevronRightIcon,
-  DownloadIcon,
   Loader2Icon,
   LockIcon,
   MailIcon,
@@ -30,7 +29,6 @@ import Privacy from "./Privacy";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import InstallPWA from "./InstallPWA";
 import useSupabase from "@/lib/supabase.client";
 import {
   Sheet,
