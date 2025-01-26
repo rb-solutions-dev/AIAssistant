@@ -38,7 +38,7 @@ const AnimatedMessage = ({ message }: { message: Message }) => {
       }
       const parentContainer = document.getElementById("chat-wraper");
       parentContainer?.scrollTo({
-        top: parentContainer.scrollHeight,
+        top: parentContainer.scrollHeight - 136,
         behavior: "smooth",
       });
     }, 20);
