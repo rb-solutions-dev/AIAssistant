@@ -144,7 +144,7 @@ const CreateMessage = () => {
         combineDocsChain: questionAnswerChain,
       });
 
-      return ragChain;
+      return { ragChain, docs };
     },
     {
       fallbackData: undefined,
@@ -215,7 +215,7 @@ const CreateMessage = () => {
       }));
     }
 
-    const answer = await ragChain!.invoke({
+    const answer = await ragChain!.ragChain!.invoke({
       input: message,
       chat_history: chatHistory
         .map(
