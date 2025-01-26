@@ -1,6 +1,7 @@
 "use client";
 
 import useSWR from "swr";
+import useSound from "use-sound";
 import { nanoid } from "nanoid";
 import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
@@ -27,6 +28,7 @@ import useSupabase from "@/lib/supabase.client";
 // hooks
 import { useToast } from "@/hooks/use-toast";
 
+const notificationSound = "/sounds/beep.wav";
 enum Role {
   Human = "human",
   System = "system",
@@ -61,6 +63,10 @@ const CreateMessage = () => {
   });
   const { toast } = useToast();
   const { mutate } = useSWRConfig();
+  const [play] = useSound(notificationSound, {
+    playbackRate: 1.5,
+    interrupt: true,
+  });
 
   const supabase = useSupabase();
   const { data: conversation } = useSWR(
@@ -220,6 +226,7 @@ const CreateMessage = () => {
     });
 
     const answerContent = answer.answer;
+
     await supabase
       .from("messages")
       .update({
@@ -235,6 +242,7 @@ const CreateMessage = () => {
             return {
               ...message,
               content: answerContent,
+              shouldAnimate: true,
             };
           }
           return message;
@@ -242,6 +250,8 @@ const CreateMessage = () => {
       },
       false
     );
+
+    play();
   };
 
   return (

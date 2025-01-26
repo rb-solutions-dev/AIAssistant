@@ -2,12 +2,13 @@
 
 import useSWR from "swr";
 import { useParams } from "next/navigation";
-import { Fragment, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 // utils
-import { cn } from "@/lib/utils";
 import useSupabase from "@/lib/supabase.client";
-import { formatTimestamp } from "@/lib/date";
+
+// components
+import ChatBubble from "@/components/ChatBubble";
 
 const ChatPage = () => {
   const { id } = useParams();
@@ -60,41 +61,18 @@ const ChatPage = () => {
     <div className="flex flex-col gap-2 px-4 mt-3 pt-16 overflow-y-auto max-h-[calc(100vh-136px)]">
       {data
         .sort((a, b) => a.created_at.localeCompare(b.created_at))
-        .map(({ role, content, id, created_at }) => {
-          if (content === "") return null;
+        .map((message) => {
+          if (message.content === "") return null;
 
-          const isHuman = role === "human";
-          const isLastMessage = id === data[data.length - 1].id;
+          const isLastMessage = message.id === data[data.length - 1].id;
+
           return (
-            <Fragment key={id}>
-              <div
-                className={cn(
-                  `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
-                  isHuman
-                    ? "bg-green-200 dark:bg-green-800 self-end"
-                    : "bg-white dark:bg-gray-700  self-start",
-                  content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
-                  content === "ANSWER_PLACEHOLDER"
-                    ? "bg-gray-200 animate-pulse"
-                    : "",
-                  isLastMessage && "mb-6"
-                )}
-              >
-                <p
-                  className={cn(
-                    isHuman
-                      ? "text-black dark:text-white text-right"
-                      : "text-black",
-                    "dark:text-white"
-                  )}
-                >
-                  {content === "ANSWER_PLACEHOLDER" ? "..." : content}
-                </p>
-                <p className="text-xs text-foreground text-right pt-1">
-                  {formatTimestamp(created_at)}
-                </p>
-              </div>
-            </Fragment>
+            <ChatBubble
+              key={message.id}
+              message={message}
+              isLastMessage={isLastMessage}
+              conversationId={conversation!.id}
+            />
           );
         })}
 
