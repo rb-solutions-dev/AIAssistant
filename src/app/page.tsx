@@ -1,6 +1,8 @@
 "use client";
+import { ImageIcon, PlusSquareIcon } from "lucide-react";
 
 // components
+import { Button } from "@/components/ui/button";
 import InstallPWA from "@/components/InstallPWA";
 import LastMessage from "@/components/LastMessage";
 import SettingSheet from "@/components/SettingSheet";
@@ -28,14 +30,14 @@ const HomePage = () => {
           <AssistantCarrousel />
         </div>
 
-        {/* <div className="mt-8">
+        <div className="mt-8">
           <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Herramientas</h2>
 
-              <Link href="/tools" className="text-sm text-primary">
+              <Button variant="link" className="text-sm text-primary">
                 Ver Todas
-              </Link>
+              </Button>
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-x-2 gap-y-1">
@@ -44,6 +46,11 @@ const HomePage = () => {
                   name: "Nuevo Chat",
                   description: "Crea un nuevo chat personalizado",
                   icon: PlusSquareIcon,
+                },
+                {
+                  name: "Creacion de Imagen",
+                  description: "Crea una imagen personalizada",
+                  icon: ImageIcon,
                 },
               ].map((tool) => {
                 return (
@@ -66,7 +73,7 @@ const HomePage = () => {
               })}
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );

@@ -52,24 +52,26 @@ const ChatPage = () => {
     }
   );
 
+  const messages = data.sort((a, b) =>
+    a.created_at.localeCompare(b.created_at)
+  );
+
   return (
     <div className="flex flex-col gap-2 px-4 mt-3 pt-16">
-      {data
-        .sort((a, b) => a.created_at.localeCompare(b.created_at))
-        .map((message) => {
-          if (message.content === "") return null;
+      {messages.map((message) => {
+        if (message.content === "") return null;
 
-          const isLastMessage = message.id === data[data.length - 1].id;
+        const isLastMessage = message.id === data[data.length - 1].id;
 
-          return (
-            <ChatBubble
-              key={message.id}
-              message={message}
-              isLastMessage={isLastMessage}
-            />
-          );
-        })}
-      <AlwaysScrollToBottom />
+        return (
+          <ChatBubble
+            key={message.id}
+            message={message}
+            isLastMessage={isLastMessage}
+          />
+        );
+      })}
+      {messages.length > 2 && <AlwaysScrollToBottom />}
     </div>
   );
 };

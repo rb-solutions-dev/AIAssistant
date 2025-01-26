@@ -73,7 +73,7 @@ const RootLayout = ({
       return data ?? [];
     },
     {
-      onSuccess: (data) => {
+      onSuccess: async (data: { id: number }[]) => {
         if (data?.length === 0) {
           trigger();
         }

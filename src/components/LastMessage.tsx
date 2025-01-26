@@ -66,6 +66,9 @@ const LastMessage = () => {
   if (isLoading || !data) return null;
 
   const message = data as unknown as LastMessage;
+
+  if (!message.conversations) return null;
+
   return (
     <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
       <div className="flex flex-row items-center justify-between gap-4">

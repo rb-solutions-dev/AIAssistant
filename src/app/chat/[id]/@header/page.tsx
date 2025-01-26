@@ -72,6 +72,14 @@ const Header = () => {
         .from("messages")
         .delete()
         .eq("conversation_id", conversation!.id);
+
+      await supabase.from("messages").insert([
+        {
+          role: "system",
+          content: `Hola, soy ${assistant!.name}. ¿En qué te puedo ayudar?`,
+          conversation_id: conversation!.id,
+        },
+      ]);
     }
   );
 
