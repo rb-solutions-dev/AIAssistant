@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import useSWR from "swr";
 import { format } from "date-fns";
@@ -69,13 +70,20 @@ const ChatsList = () => {
         <h2 className="text-xl font-semibold">Tus Chats</h2>
       </div>
 
-      <div className="flex flex-col gap-4 mt-4 ">
+      <div className="flex flex-col gap-4 mt-4">
         {data.map((chat) => {
           const chatData = chat as unknown as Chat;
 
           if (chatData.messages.length === 0) return null;
           return (
-            <div key={chatData.id} className="flex flex-row gap-2 items-center">
+            <div
+              key={chatData.id}
+              className="flex flex-row gap-2 items-center relative"
+            >
+              <Link
+                href={`/chat/${chatData.assistants.id}?back_url=/chats`}
+                className="absolute inset-0"
+              />
               <Image
                 src={chatData.assistants.avatar_url}
                 alt={chatData.assistants.name}
@@ -83,7 +91,7 @@ const ChatsList = () => {
                 height={64}
                 className="rounded-full morena-image w-16 h-16"
               />
-              <div className="flex flex-col">
+              <div className="flex flex-col flex-1">
                 <p className="text-sm font-medium">
                   {chatData.assistants.name}
                 </p>

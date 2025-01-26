@@ -1,3 +1,4 @@
+import { dark } from "@clerk/themes";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -5,11 +6,11 @@ import "./globals.css";
 // components
 import { Toaster } from "@/components/ui/toaster";
 import MobileNavbar from "@/components/MobileNavbar";
+import ChatListener from "@/components/ChatListener";
 import { ThemeProvider } from "@/components/theme-provider";
 
 // interfaces
 import type { Metadata } from "next";
-import { dark } from "@clerk/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,12 +71,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex flex-col h-screen w-screen relative bg-background">
-              {children}
+            <ChatListener />
+            <div className="flex flex-col h-screen flex-1 bg-background">
+              {/* Ensure children have space for the navbar */}
+              <div className="flex-1 overflow-y-auto pb-[80px]">{children}</div>
 
-              <div className="pb-20" />
-              <MobileNavbar />
+              {/* Fixed Bottom Navbar */}
+              <div className="fixed bottom-0 right-0 border-t bg-background w-full z-10 h-[80px]">
+                <MobileNavbar />
+              </div>
             </div>
+
             <Toaster />
           </ThemeProvider>
         </body>

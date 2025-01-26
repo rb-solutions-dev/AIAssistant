@@ -15,7 +15,7 @@ const ChatsPage = () => {
         <ChatsList />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 mb-20">
         <AssistentsList />
       </div>
     </div>

@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import useSWR from "swr";
 import { useUser } from "@clerk/nextjs";
-import { useParams } from "next/navigation";
 import useSWRMutation from "swr/mutation";
+import { useParams, useSearchParams } from "next/navigation";
 import { ChevronLeftIcon, Dot, MoreVerticalIcon } from "lucide-react";
 
 // utils
@@ -23,6 +23,8 @@ const Header = () => {
   const { id } = useParams();
   const supabase = useSupabase();
   const { isSignedIn } = useUser();
+  const searchParams = useSearchParams();
+  const backUrl = searchParams.get("back_url");
 
   const apiKey = isSignedIn ? "/api/conversations" : null;
   const { data } = useSWR(
@@ -77,7 +79,7 @@ const Header = () => {
     <>
       <div className="flex flex-row items-center">
         <button className="relative">
-          <Link href="/" className="">
+          <Link href={backUrl ? backUrl : "/"} className="">
             <ChevronLeftIcon className="w-6 h-6" />
           </Link>
         </button>

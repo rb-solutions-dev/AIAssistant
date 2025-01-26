@@ -29,7 +29,7 @@ import useSupabase from "@/lib/supabase.client";
 import { useToast } from "@/hooks/use-toast";
 
 const notificationSound = "/sounds/beep.wav";
-enum Role {
+export enum Role {
   Human = "human",
   System = "system",
 }

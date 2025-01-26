@@ -10,6 +10,12 @@ import useSupabase from "@/lib/supabase.client";
 // components
 import ChatBubble from "@/components/ChatBubble";
 
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef<HTMLDivElement>(null);
+  useEffect(() => elementRef.current?.scrollIntoView());
+  return <div className="min-h-[137px]" id="last-message" ref={elementRef} />;
+};
+
 const ChatPage = () => {
   const { id } = useParams();
   const supabase = useSupabase();
@@ -45,23 +51,9 @@ const ChatPage = () => {
       fallbackData: [],
     }
   );
-  const lastMessageRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({
-        behavior: "auto",
-        block: "end",
-        inline: "nearest",
-      });
-    }
-  }, [data]);
 
   return (
-    <div
-      className="flex flex-col gap-2 px-4 mt-3 pt-16 overflow-y-auto max-h-[calc(100vh-136px)]"
-      id="chat-wraper"
-    >
+    <div className="flex flex-col gap-2 px-4 mt-3 pt-16">
       {data
         .sort((a, b) => a.created_at.localeCompare(b.created_at))
         .map((message) => {
@@ -77,8 +69,7 @@ const ChatPage = () => {
             />
           );
         })}
-
-      <div ref={lastMessageRef} className="h-4" id="last-message" />
+      <AlwaysScrollToBottom />
     </div>
   );
 };
