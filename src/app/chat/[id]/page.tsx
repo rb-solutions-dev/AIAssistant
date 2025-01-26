@@ -58,43 +58,45 @@ const ChatPage = () => {
 
   return (
     <div className="flex flex-col gap-2 px-4 mt-3 pt-16 overflow-y-auto max-h-[calc(100vh-136px)]">
-      {data.map(({ role, content, id, created_at }) => {
-        if (content === "") return null;
+      {data
+        .sort((a, b) => a.created_at.localeCompare(b.created_at))
+        .map(({ role, content, id, created_at }) => {
+          if (content === "") return null;
 
-        const isHuman = role === "human";
-        const isLastMessage = id === data[data.length - 1].id;
-        return (
-          <Fragment key={id}>
-            <div
-              className={cn(
-                `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
-                isHuman
-                  ? "bg-green-200 dark:bg-green-800 self-end"
-                  : "bg-white dark:bg-gray-700  self-start",
-                content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
-                content === "ANSWER_PLACEHOLDER"
-                  ? "bg-gray-200 animate-pulse"
-                  : "",
-                isLastMessage && "mb-6"
-              )}
-            >
-              <p
+          const isHuman = role === "human";
+          const isLastMessage = id === data[data.length - 1].id;
+          return (
+            <Fragment key={id}>
+              <div
                 className={cn(
+                  `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
                   isHuman
-                    ? "text-black dark:text-white text-right"
-                    : "text-black",
-                  "dark:text-white"
+                    ? "bg-green-200 dark:bg-green-800 self-end"
+                    : "bg-white dark:bg-gray-700  self-start",
+                  content === "Thinking..." ? "bg-gray-200 animate-pulse" : "",
+                  content === "ANSWER_PLACEHOLDER"
+                    ? "bg-gray-200 animate-pulse"
+                    : "",
+                  isLastMessage && "mb-6"
                 )}
               >
-                {content === "ANSWER_PLACEHOLDER" ? "..." : content}
-              </p>
-              <p className="text-xs text-foreground text-right pt-1">
-                {formatTimestamp(created_at)}
-              </p>
-            </div>
-          </Fragment>
-        );
-      })}
+                <p
+                  className={cn(
+                    isHuman
+                      ? "text-black dark:text-white text-right"
+                      : "text-black",
+                    "dark:text-white"
+                  )}
+                >
+                  {content === "ANSWER_PLACEHOLDER" ? "..." : content}
+                </p>
+                <p className="text-xs text-foreground text-right pt-1">
+                  {formatTimestamp(created_at)}
+                </p>
+              </div>
+            </Fragment>
+          );
+        })}
 
       <div ref={lastMessageRef} className="h-4" />
     </div>

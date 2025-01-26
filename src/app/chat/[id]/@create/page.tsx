@@ -24,6 +24,9 @@ import { Button } from "@/components/ui/button";
 // utils
 import useSupabase from "@/lib/supabase.client";
 
+// hooks
+import { useToast } from "@/hooks/use-toast";
+
 enum Role {
   Human = "human",
   System = "system",
@@ -56,6 +59,7 @@ const CreateMessage = () => {
       message: "",
     },
   });
+  const { toast } = useToast();
   const { mutate } = useSWRConfig();
 
   const supabase = useSupabase();
@@ -141,39 +145,49 @@ const CreateMessage = () => {
   );
 
   const handleSubmit = async ({ message }: { message: string }) => {
-    await supabase.from("messages").insert({
-      role: Role.Human,
-      content: message,
-      conversation_id: conversation!.id,
-    });
+    const { data: newMessageHumanOnDB, error: errorHuman } = await supabase
+      .from("messages")
+      .insert([
+        {
+          role: Role.Human,
+          content: message,
+          conversation_id: conversation!.id,
+        },
+        {
+          role: Role.System,
+          content: "ANSWER_PLACEHOLDER",
+          conversation_id: conversation!.id,
+        },
+      ])
+      .select("id, content, created_at, role");
 
-    const answerId = nanoid();
+    if (errorHuman || !newMessageHumanOnDB) {
+      toast({
+        title: "Error",
+        description: errorHuman?.message || "Error al enviar el mensaje",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const answerId = newMessageHumanOnDB.find(
+      (message) => message.role === Role.System
+    )?.id;
+
     await mutate(
       `/api/conversations/${conversation!.id}/messages`,
       (currentData: { role: string; content: string }[] = []) => {
-        return [
-          ...currentData,
-          {
-            id: nanoid(),
-            role: Role.Human,
-            content: message,
-            created_at: new Date().toISOString(),
-          },
-          {
-            id: answerId,
-            role: Role.System,
-            content: "ANSWER_PLACEHOLDER",
-            created_at: new Date().toISOString(),
-          },
-        ];
+        return [...currentData, ...newMessageHumanOnDB];
       },
       {
         revalidate: false,
       }
     );
+
     form.reset({
       message: "",
     });
+    form.setFocus("message");
 
     const { data, error } = await supabase
       .from("messages")
@@ -198,19 +212,20 @@ const CreateMessage = () => {
     const answer = await ragChain!.invoke({
       input: message,
       chat_history: chatHistory
-        .map(({ role, content }) => `${role}: ${content}`)
+        .map(
+          ({ role, content }) =>
+            `${role}: ${content === "ANSWER_PLACEHOLDER" ? "" : content}`
+        )
         .join("\n"),
     });
 
-    const { data: newMessageAnswerOnDB } = await supabase
+    const answerContent = answer.answer;
+    await supabase
       .from("messages")
-      .insert({
-        role: Role.System,
-        content: answer.answer,
-        conversation_id: conversation!.id,
+      .update({
+        content: answerContent,
       })
-      .select("id, content, created_at")
-      .single();
+      .eq("id", answerId);
 
     await mutate(
       `/api/conversations/${conversation!.id}/messages`,
@@ -219,17 +234,14 @@ const CreateMessage = () => {
           if (message.id === answerId) {
             return {
               ...message,
-              id: newMessageAnswerOnDB?.id,
-              content: newMessageAnswerOnDB?.content,
-              created_at: newMessageAnswerOnDB?.created_at,
+              content: answerContent,
             };
           }
           return message;
         });
-      }
+      },
+      false
     );
-
-    form.setFocus("message");
   };
 
   return (
