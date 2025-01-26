@@ -1,36 +1,25 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 // utils
 import { cn } from "@/lib/utils";
 import { formatTimestamp } from "@/lib/date";
-import { useEffect, useState } from "react";
-import { useSWRConfig } from "swr";
 
 type Message = {
   id: string;
   role: string;
   content: string;
   created_at: string;
-  shouldAnimate?: boolean;
 };
 
 interface Props {
   message: Message;
-  conversationId: string;
   isLastMessage: boolean;
 }
 
-const AnimatedMessage = ({
-  message,
-  conversationId,
-}: {
-  message: Message;
-  conversationId: string;
-}) => {
+const AnimatedMessage = ({ message }: { message: Message }) => {
   const [completedTyping, setCompletedTyping] = useState(false);
   const [displayResponse, setDisplayResponse] = useState(message.content);
-
-  const { mutate } = useSWRConfig();
 
   useEffect(() => {
     setCompletedTyping(false);
@@ -46,27 +35,11 @@ const AnimatedMessage = ({
       if (i > stringResponse.length) {
         clearInterval(intervalId);
         setCompletedTyping(true);
-
-        mutate(
-          `/api/conversations/${conversationId}/messages`,
-          (currentData: Message[] = []) => {
-            return currentData.map((msg) => {
-              if (msg.id === message.id) {
-                return {
-                  ...msg,
-                  shouldAnimate: false,
-                };
-              }
-              return message;
-            });
-          },
-          false
-        );
       }
     }, 20);
 
     return () => clearInterval(intervalId);
-  }, [message, conversationId, mutate]);
+  }, [message]);
 
   return (
     <>
@@ -84,11 +57,13 @@ const AnimatedMessage = ({
   );
 };
 
-const ChatBubble = ({ message, isLastMessage, conversationId }: Props) => {
+const ChatBubble = ({ message, isLastMessage }: Props) => {
   const isHuman = message.role === "human";
   const isPlaceholder = message.content === "ANSWER_PLACEHOLDER";
 
-  const shouldAnimate = message.shouldAnimate;
+  const messageCreatedLast10Seconds =
+    new Date(message.created_at).getTime() > Date.now() - 10000;
+  const shouldAnimate = messageCreatedLast10Seconds;
 
   return (
     <div
@@ -124,10 +99,7 @@ const ChatBubble = ({ message, isLastMessage, conversationId }: Props) => {
           ) : (
             <>
               {shouldAnimate ? (
-                <AnimatedMessage
-                  message={message}
-                  conversationId={conversationId}
-                />
+                <AnimatedMessage message={message} />
               ) : (
                 message.content
               )}

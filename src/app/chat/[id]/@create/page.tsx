@@ -64,7 +64,8 @@ const CreateMessage = () => {
   const { toast } = useToast();
   const { mutate } = useSWRConfig();
   const [play] = useSound(notificationSound, {
-    playbackRate: 1.5,
+    playbackRate: 1,
+    volume: 1,
     interrupt: true,
   });
 
@@ -193,7 +194,6 @@ const CreateMessage = () => {
     form.reset({
       message: "",
     });
-    form.setFocus("message");
 
     const { data, error } = await supabase
       .from("messages")
@@ -242,7 +242,6 @@ const CreateMessage = () => {
             return {
               ...message,
               content: answerContent,
-              shouldAnimate: true,
             };
           }
           return message;
@@ -251,7 +250,9 @@ const CreateMessage = () => {
       false
     );
 
-    play();
+    form.setFocus("message");
+
+    play({ forceSoundEnabled: true });
   };
 
   return (

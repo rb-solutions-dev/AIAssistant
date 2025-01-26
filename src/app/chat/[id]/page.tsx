@@ -71,7 +71,6 @@ const ChatPage = () => {
               key={message.id}
               message={message}
               isLastMessage={isLastMessage}
-              conversationId={conversation!.id}
             />
           );
         })}
