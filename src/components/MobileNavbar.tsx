@@ -31,12 +31,12 @@ const MobileNavbar = () => {
             icon: MessageCircle,
             active: pathname.includes("/chat"),
           },
-          {
-            name: "Herramientas",
-            href: "/tools",
-            icon: Hammer,
-            active: pathname.includes("/tools"),
-          },
+          // {
+          //   name: "Herramientas",
+          //   href: "/tools",
+          //   icon: Hammer,
+          //   active: pathname.includes("/tools"),
+          // },
         ].map(({ name, href, icon: Icon, active }) => (
           <Link
             key={name}
