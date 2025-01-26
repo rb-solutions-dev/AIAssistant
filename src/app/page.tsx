@@ -30,7 +30,7 @@ const HomePage = () => {
           <AssistantCarrousel />
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 mb-20">
           <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Herramientas</h2>
