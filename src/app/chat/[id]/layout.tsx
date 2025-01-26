@@ -91,7 +91,7 @@ const RootLayout = ({
       <div className="h-16 fixed top-0 left-0 right-0 px-2 bg-background flex justify-between items-center border-b z-10">
         {header}
       </div>
-      <div className="flex-1 h-screen">{children}</div>
+      <div className="flex-1 h-screen pt-16">{children}</div>
       <div className="flex flex-col fixed bottom-20 right-0 border-t min-h-14 max-h-14 bg-background w-full z-10">
         {create}
       </div>
