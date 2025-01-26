@@ -58,7 +58,10 @@ const ChatPage = () => {
   }, [data]);
 
   return (
-    <div className="flex flex-col gap-2 px-4 mt-3 pt-16 overflow-y-auto max-h-[calc(100vh-136px)]">
+    <div
+      className="flex flex-col gap-2 px-4 mt-3 pt-16 overflow-y-auto max-h-[calc(100vh-136px)]"
+      id="chat-wraper"
+    >
       {data
         .sort((a, b) => a.created_at.localeCompare(b.created_at))
         .map((message) => {
@@ -75,7 +78,7 @@ const ChatPage = () => {
           );
         })}
 
-      <div ref={lastMessageRef} className="h-4" />
+      <div ref={lastMessageRef} className="h-4" id="last-message" />
     </div>
   );
 };

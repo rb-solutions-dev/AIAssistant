@@ -36,6 +36,11 @@ const AnimatedMessage = ({ message }: { message: Message }) => {
         clearInterval(intervalId);
         setCompletedTyping(true);
       }
+      const parentContainer = document.getElementById("chat-wraper");
+      parentContainer?.scrollTo({
+        top: parentContainer.scrollHeight,
+        behavior: "smooth",
+      });
     }, 20);
 
     return () => clearInterval(intervalId);
