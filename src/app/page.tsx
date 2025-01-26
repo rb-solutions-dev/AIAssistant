@@ -1,6 +1,4 @@
 "use client";
-import Link from "next/link";
-import { PlusSquareIcon } from "lucide-react";
 
 // components
 import InstallPWA from "@/components/InstallPWA";

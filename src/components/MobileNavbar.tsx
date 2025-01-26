@@ -5,7 +5,7 @@ import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Hammer, Home, Loader, MessageCircle } from "lucide-react";
+import { Home, Loader, MessageCircle } from "lucide-react";
 
 // utils
 import { cn } from "@/lib/utils";
