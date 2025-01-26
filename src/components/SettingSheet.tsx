@@ -30,7 +30,6 @@ import Privacy from "./Privacy";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import PushNotificationManager from "./PushNotification";
 import {
   Sheet,
   SheetContent,
@@ -239,7 +238,7 @@ const SettingSheet = () => {
                 Borrar Historial
               </Button>
 
-              <PushNotificationManager />
+              {/* <PushNotificationManager /> */}
             </>
           </div>
         ) : (
