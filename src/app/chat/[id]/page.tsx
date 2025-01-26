@@ -58,6 +58,7 @@ const ChatPage = () => {
 
   return (
     <div className="flex flex-col gap-2 px-4 mt-3">
+      <div className="sm:min-h-0 min-h-[80px]" />
       {messages.map((message) => {
         if (message.content === "") return null;
 
