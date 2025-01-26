@@ -40,7 +40,7 @@ const AnimatedMessage = ({ message }: { message: Message }) => {
         clearInterval(intervalId);
         setCompletedTyping(true);
       }
-    }, 5);
+    }, 3);
 
     return () => clearInterval(intervalId);
   }, [message]);
