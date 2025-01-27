@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import MobileNavbar from "@/components/MobileNavbar";
 import ChatListener from "@/components/ChatListener";
 import { ThemeProvider } from "@/components/theme-provider";
-
+import SplashScreen from "@/components/splashScreen"; // Import the splash screen
 // interfaces
 import type { Metadata } from "next";
 
@@ -59,6 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    
     <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en" suppressHydrationWarning>
         <head />
@@ -71,6 +72,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <SplashScreen /> {/* Show splash screen */}
             <ChatListener />
             <div className="flex flex-col h-screen flex-1 bg-background">
               {/* Ensure children have space for the navbar */}

@@ -80,7 +80,7 @@ const ChatBubble = ({ message, isLastMessage }: Props) => {
       >
         {isHuman ? null : (
           <Image
-            src="/icons/ios/40.png"
+            src="/be.png"
             alt="logo"
             width={40}
             height={40}

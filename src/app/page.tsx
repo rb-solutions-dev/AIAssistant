@@ -8,13 +8,13 @@ import LastMessage from "@/components/LastMessage";
 import SettingSheet from "@/components/SettingSheet";
 import AssistantCarrousel from "@/components/AssistantCarrousel";
 
+
 const HomePage = () => {
   return (
     <>
       <div className="px-4 py-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-extrabold">Bienvenido!</h1>
-
           <div className="flex items-center gap-2">
             <InstallPWA />
 
