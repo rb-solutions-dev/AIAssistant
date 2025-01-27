@@ -1,5 +1,5 @@
 "use client";
-import { ImageIcon, PlusSquareIcon } from "lucide-react";
+import { BookText, ImageIcon, PlusSquareIcon } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -51,6 +51,11 @@ const HomePage = () => {
                   name: "Creacion de Imagen",
                   description: "Crea una imagen personalizada",
                   icon: ImageIcon,
+                },
+                {
+                  name: "Lector de documentos",
+                  description: "Usa tu propio documento",
+                  icon: BookText,
                 },
               ].map((tool) => {
                 return (

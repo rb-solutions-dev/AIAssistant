@@ -13,6 +13,7 @@ import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
 import {
   ChatPromptTemplate,
   MessagesPlaceholder,
@@ -43,7 +44,7 @@ type ChatMessage = {
 const OPEN_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
 const llm = new ChatOpenAI({
-  model: "gpt-4o",
+  model: "gpt-4o-mini",
   apiKey: OPEN_API_KEY,
   maxTokens: 3000,
 });
@@ -97,8 +98,13 @@ const CreateMessage = () => {
           apiKey: OPEN_API_KEY,
         })
       );
+      const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
+        minSimilarityScore: 0.1, // Finds results with at least this similarity score
+        maxK: 17, // The maximum K value to use. Use it based to your chunk size to make sure you don't run out of tokens
+        kIncrement: 17, // How much to increase K by each time. It'll fetch N results, then N + kIncrement, then N + kIncrement * 2, etc.
+        
+      });
 
-      const retriever = vectorStore.asRetriever();
 
       const contextualizeQSystemPrompt =
         "Given a chat history and the latest user question " +
@@ -120,13 +126,13 @@ const CreateMessage = () => {
       });
 
       const systemPrompt =
-        "You are an assistant for question-answering tasks. " +
-        "Use the following pieces of retrieved context to answer " +
-        "the question. If you don't know the answer, say that you " +
-        "don't know. Use three sentences maximum and keep the " +
-        "answer concise." +
-        "\n\n" +
-        "{context}";
+      "You are an assistant for question-answering tasks. " +
+      "all the context is about articles from the constitution of the state of tamaulipas mexico  " +
+      "Use the following pieces of retrieved context to answer the question " +
+      " Use 3 sentences maximum and keep the " +
+      "answer concise." +
+      "\n\n" +
+      "{context}";
 
       const qaPrompt = ChatPromptTemplate.fromMessages([
         [Role.System, systemPrompt],
@@ -224,6 +230,8 @@ const CreateMessage = () => {
         )
         .join("\n"),
     });
+
+    console.log(answer.context)
 
     const answerContent = answer.answer;
 
