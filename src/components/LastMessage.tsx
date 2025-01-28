@@ -80,11 +80,16 @@ const LastMessage = () => {
           className="rounded-full morena-image min-w-16"
         />
 
-        <p className="text-primary flex-1">
-          {message.content.length > 120
-            ? `${message.content.slice(0, 120).trim()}...`
-            : message.content}
-        </p>
+        <div className="text-primary flex-1 chat-bubble">
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                message.content.length > 120
+                  ? message.content.slice(0, 120).trim()
+                  : message.content,
+            }}
+          />
+        </div>
       </div>
 
       <Link

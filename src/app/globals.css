@@ -121,7 +121,6 @@ html, body {
   }
   
   .chat-bubble {
-    
     ul, ol {
       @apply pl-4 mt-2;
     }

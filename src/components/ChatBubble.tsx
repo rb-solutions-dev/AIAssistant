@@ -1,11 +1,10 @@
 import Image from "next/image";
+import { Dot } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 // utils
 import { cn } from "@/lib/utils";
-import { formatTimestamp } from "@/lib/date";
 import { Role } from "@/app/chat/[id]/@create/page";
-import { Dot } from "lucide-react";
 
 type Message = {
   id: string;
