@@ -102,9 +102,7 @@ const CreateMessage = () => {
         minSimilarityScore: 0.1, // Finds results with at least this similarity score
         maxK: 17, // The maximum K value to use. Use it based to your chunk size to make sure you don't run out of tokens
         kIncrement: 17, // How much to increase K by each time. It'll fetch N results, then N + kIncrement, then N + kIncrement * 2, etc.
-        
       });
-
 
       const contextualizeQSystemPrompt =
         "Given a chat history and the latest user question " +
@@ -126,14 +124,18 @@ const CreateMessage = () => {
       });
 
       const systemPrompt =
-      "You are an assistant for question-answering tasks. " +
-      "all the context is about articles from the constitution of the state of tamaulipas mexico  " +
-      "Use the following pieces of retrieved context to answer the question " +
-      "always start with the name of the article first  " +
-      " Use 3 sentences maximum and keep the " +
-      "answer concise." +
-      "\n\n" +
-      "{context}";
+        "You are an advanced AI assistant specializing in answering questions about the Constitution of the State of Tamaulipas, Mexico. " +
+        "Use the following pieces of retrieved context to answer the question in a well-structured, engaging format. " +
+        "Always start with the article name first. " +
+        "Return the response as a raw HTML string with rich formatting, including elements like:<br />" +
+        "✅ <b>Bold</b>, <i>Italic</i>, and <u>Underlined</u> text where appropriate.<br />" +
+        "✅ <h2> for article names and <p> for body text.<br />" +
+        "✅ Use emojis to enhance readability (e.g., 📜 for legal references, 🏛️ for government, 📖 for education, ⚖️ for law).<br />" +
+        "✅ Use <ul> and <li> for lists.<br />" +
+        "✅ Format quotes inside <blockquote>.<br />" +
+        "✅ Include hyperlinks using <a href='#'>.[link]</a>.<br />" +
+        "✅ No triple backticks, no markdown—just clean, raw HTML.<br /><br />" +
+        "{context}";
 
       const qaPrompt = ChatPromptTemplate.fromMessages([
         [Role.System, systemPrompt],
@@ -164,7 +166,7 @@ const CreateMessage = () => {
       .insert([
         {
           role: Role.Human,
-          content: message,
+          content: `<p>${message}</p>`,
           conversation_id: conversation!.id,
         },
         {
@@ -231,8 +233,6 @@ const CreateMessage = () => {
         )
         .join("\n"),
     });
-
-    console.log(answer.context)
 
     const answerContent = answer.answer;
 

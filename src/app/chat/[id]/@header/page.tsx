@@ -76,7 +76,9 @@ const Header = () => {
       await supabase.from("messages").insert([
         {
           role: "system",
-          content: `Hola, soy ${assistant!.name}. ¿En qué te puedo ayudar?`,
+          content: `<strong>Hola, soy ${
+            assistant!.name
+          }. ¿En qué te puedo ayudar?</strong> `,
           conversation_id: conversation!.id,
         },
       ]);

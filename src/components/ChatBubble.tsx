@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { formatTimestamp } from "@/lib/date";
 import { Role } from "@/app/chat/[id]/@create/page";
+import { Dot } from "lucide-react";
 
 type Message = {
   id: string;
@@ -47,7 +48,10 @@ const AnimatedMessage = ({ message }: { message: Message }) => {
 
   return (
     <>
-      {displayResponse}{" "}
+      <div
+        className="chat-bubble"
+        dangerouslySetInnerHTML={{ __html: displayResponse }}
+      />{" "}
       {!completedTyping && (
         <svg
           viewBox="8 4 8 16"
@@ -64,7 +68,7 @@ const AnimatedMessage = ({ message }: { message: Message }) => {
   );
 };
 
-const ChatBubble = ({ message, isLastMessage }: Props) => {
+const ChatBubble = ({ message }: Props) => {
   const isHuman = message.role === "human";
   const isPlaceholder = message.content === "ANSWER_PLACEHOLDER";
 
@@ -89,35 +93,28 @@ const ChatBubble = ({ message, isLastMessage }: Props) => {
         )}
         <div
           className={cn(
-            `relative px-5 py-3 w-4/5 shadow-md max-w-fit rounded-xl`,
+            `relative`,
             isHuman
-              ? "bg-green-200 dark:bg-green-800 self-end"
-              : "bg-white dark:bg-gray-700  self-start",
-            isPlaceholder ? "bg-gray-200 animate-pulse" : "",
-            isLastMessage && "mb-6"
+              ? "text-right bg-morena/10 dark:bg-morena p-4 rounded-2xl shadow-md text-gray-900 dark:text-gray-100 w-fit px-2 py-1"
+              : "text-left flex-1 px-1"
           )}
         >
-          <p
-            className={cn(
-              isHuman ? "text-black dark:text-white text-right" : "text-black",
-              "dark:text-white"
-            )}
-          >
+          <>
             {isPlaceholder ? (
-              "..."
+              <Dot className="h-20 w-20 animate-pulse" />
             ) : (
               <>
                 {shouldAnimate ? (
                   <AnimatedMessage message={message} />
                 ) : (
-                  message.content
+                  <div
+                    className="chat-bubble"
+                    dangerouslySetInnerHTML={{ __html: message.content }}
+                  />
                 )}
               </>
             )}
-          </p>
-          <p className="text-xs text-foreground text-right pt-1">
-            {formatTimestamp(message.created_at)}
-          </p>
+          </>
         </div>
       </div>
     </>
