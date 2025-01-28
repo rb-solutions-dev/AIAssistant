@@ -91,31 +91,26 @@ const ChatBubble = ({ message }: Props) => {
             className="self-start rounded-full"
           />
         )}
-        <div
-          className={cn(
-            `relative`,
-            isHuman
-              ? "text-right bg-morena/10 dark:bg-morena p-4 rounded-2xl shadow-md text-gray-900 dark:text-gray-100 w-fit px-2 py-1"
-              : "text-left flex-1 px-1"
+        <>
+          {isPlaceholder ? (
+            <Dot className="h-8 w-8 animate-pulse" />
+          ) : (
+            <>
+              {shouldAnimate ? (
+                <AnimatedMessage message={message} />
+              ) : (
+                <div
+                  className={cn(
+                    isHuman
+                      ? "chat-bubble-human"
+                      : "chat-bubble text-left flex-1 px-1"
+                  )}
+                  dangerouslySetInnerHTML={{ __html: message.content }}
+                />
+              )}
+            </>
           )}
-        >
-          <>
-            {isPlaceholder ? (
-              <Dot className="h-20 w-20 animate-pulse" />
-            ) : (
-              <>
-                {shouldAnimate ? (
-                  <AnimatedMessage message={message} />
-                ) : (
-                  <div
-                    className="chat-bubble"
-                    dangerouslySetInnerHTML={{ __html: message.content }}
-                  />
-                )}
-              </>
-            )}
-          </>
-        </div>
+        </>
       </div>
     </>
   );
