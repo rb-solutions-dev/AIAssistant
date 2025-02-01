@@ -1,10 +1,12 @@
 "use client";
 
-import { useSession } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
+import { useOrganization, useSession } from "@clerk/nextjs";
 
 const useSupabase = () => {
   const { session } = useSession();
+  const { organization } = useOrganization();
+
   const client = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_KEY!,
@@ -17,6 +19,7 @@ const useSupabase = () => {
 
           const headers = new Headers(options?.headers);
           headers.set("Authorization", `Bearer ${clerkToken}`);
+          headers.set("x-organization-id", organization?.id || "");
 
           return fetch(url, {
             ...options,
