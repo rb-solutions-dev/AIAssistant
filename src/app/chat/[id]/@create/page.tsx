@@ -96,7 +96,11 @@ const CreateMessage = () => {
     }
   );
 
-  const { data: ragChain, isLoading: isLoadingRagChain } = useSWR(
+  const {
+    data: ragChain,
+    isLoading: isLoadingRagChain,
+    error: ragChainError,
+  } = useSWR(
     assistant ? `/api/chat/assistants/rag/${assistant.rag_file_path}` : null,
     async () => {
       const { data, error } = await supabase.storage
@@ -143,20 +147,19 @@ const CreateMessage = () => {
       });
 
       const systemPrompt =
-        assistant!.prompt ??
-        "" +
-          "You are an advanced AI assistant specializing in answering questions about the Constitution of the State of Tamaulipas, Mexico. " +
-          "Use the following pieces of retrieved context to answer the question in a well-structured, engaging format. " +
-          "Always start with the article name first. " +
-          "Return the response as a raw HTML string with rich formatting, including elements like:<br />" +
-          "✅ <b>Bold</b>, <i>Italic</i>, and <u>Underlined</u> text where appropriate.<br />" +
-          "✅ <h2> for article names and <p> for body text.<br />" +
-          "✅ Use emojis to enhance readability (e.g., 📜 for legal references, 🏛️ for government, 📖 for education, ⚖️ for law).<br />" +
-          "✅ Use <ul> and <li> for lists.<br />" +
-          "✅ Format quotes inside <blockquote>.<br />" +
-          "✅ Include hyperlinks using <a href='#'>.[link]</a>.<br />" +
-          "✅ No triple backticks, no markdown—just clean, raw HTML.<br /><br />" +
-          "{context}";
+        assistant!.prompt +
+        "You are an advanced AI assistant specializing in answering questions about the Constitution of the State of Tamaulipas, Mexico. " +
+        "Use the following pieces of retrieved context to answer the question in a well-structured, engaging format. " +
+        "Always start with the article name first. " +
+        "Return the response as a raw HTML string with rich formatting, including elements like:<br />" +
+        "✅ <b>Bold</b>, <i>Italic</i>, and <u>Underlined</u> text where appropriate.<br />" +
+        "✅ <h2> for article names and <p> for body text.<br />" +
+        "✅ Use emojis to enhance readability (e.g., 📜 for legal references, 🏛️ for government, 📖 for education, ⚖️ for law).<br />" +
+        "✅ Use <ul> and <li> for lists.<br />" +
+        "✅ Format quotes inside <blockquote>.<br />" +
+        "✅ Include hyperlinks using <a href='#'>.[link]</a>.<br />" +
+        "✅ No triple backticks, no markdown—just clean, raw HTML.<br /><br />" +
+        "{context}";
 
       const qaPrompt = ChatPromptTemplate.fromMessages([
         [Role.System, systemPrompt],
@@ -285,6 +288,12 @@ const CreateMessage = () => {
     play({ forceSoundEnabled: true });
   };
 
+  const isDisabled =
+    isLoadingRagChain ||
+    form.formState.isSubmitting ||
+    !ragChain ||
+    isLoadingAssistant;
+
   return (
     <form
       onSubmit={form.handleSubmit(handleSubmit)}
@@ -293,19 +302,10 @@ const CreateMessage = () => {
       <Input
         placeholder="Escribe un mensaje"
         className="h-10 placeholder:text-gray-500"
-        disabled={isLoadingRagChain || form.formState.isSubmitting}
+        disabled={isDisabled}
         {...form.register("message")}
       />
-      <Button
-        variant="outline"
-        type="submit"
-        disabled={
-          isLoadingRagChain ||
-          form.formState.isSubmitting ||
-          !ragChain ||
-          isLoadingAssistant
-        }
-      >
+      <Button variant="outline" type="submit" disabled={isDisabled}>
         {form.formState.isSubmitting ? (
           <Loader className="w-6 h-6 animate-spin" />
         ) : (
