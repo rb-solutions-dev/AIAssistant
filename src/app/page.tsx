@@ -1,4 +1,6 @@
 "use client";
+import Image from "next/image";
+import { Protect, OrganizationSwitcher } from "@clerk/nextjs";
 import { BookText, ImageIcon, PlusSquareIcon } from "lucide-react";
 
 // components
@@ -8,7 +10,6 @@ import LastMessage from "@/components/LastMessage";
 import SettingSheet from "@/components/SettingSheet";
 import AssistantCarrousel from "@/components/AssistantCarrousel";
 
-
 const HomePage = () => {
   return (
     <>
@@ -16,12 +17,47 @@ const HomePage = () => {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-extrabold">Bienvenido!</h1>
           <div className="flex items-center gap-2">
+            <Protect role="org:admin">
+              <OrganizationSwitcher
+                hidePersonal
+                appearance={{
+                  elements: {
+                    organizationSwitcherPopoverActionButton__createOrganization:
+                      {
+                        display: "none",
+                      },
+                    organizationSwitcherPopover: {
+                      display: "none",
+                    },
+                    organizationPreviewAvatarBox: {
+                      backgroundColor: "unset",
+                    },
+                    organizationSwitcherPopoverCard: {
+                      boxShadow: "none",
+                      borderStyle: "solid",
+                      borderColor: "#e2e8f0",
+                      borderWidth: "1px",
+                      borderRadius: "8px",
+                    },
+                  },
+                }}
+              />
+            </Protect>
             <InstallPWA />
 
             <SettingSheet />
           </div>
         </div>
 
+        <div className="flex justify-center items-center">
+          <Image
+            src="/icons/ios/80.png"
+            alt="LexIA"
+            className="rounded-full w-20 h-20"
+            width={80}
+            height={80}
+          />
+        </div>
         <div className="mt-4">
           <LastMessage />
         </div>
