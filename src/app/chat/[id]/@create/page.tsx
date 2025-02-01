@@ -89,7 +89,7 @@ const CreateMessage = () => {
     async () => {
       const { data } = await supabase
         .from("assistants")
-        .select("prompt, rag_file_path, docs_qty, avatar_url")
+        .select("prompt, rag_file_path")
         .match({ id })
         .single();
       return data;
@@ -145,9 +145,20 @@ console.log(docs)
       });
 
       const systemPrompt =
-        assistant!.prompt +
-        "{context}";
-console.log(systemPrompt)
+        assistant!.prompt ??
+        "" +
+          "You are an advanced AI assistant specializing in answering questions about the Constitution of the State of Tamaulipas, Mexico. " +
+          "Use the following pieces of retrieved context to answer the question in a well-structured, engaging format. " +
+          "Always start with the article name first. " +
+          "Return the response as a raw HTML string with rich formatting, including elements like:<br />" +
+          "✅ <b>Bold</b>, <i>Italic</i>, and <u>Underlined</u> text where appropriate.<br />" +
+          "✅ <h2> for article names and <p> for body text.<br />" +
+          "✅ Use emojis to enhance readability (e.g., 📜 for legal references, 🏛️ for government, 📖 for education, ⚖️ for law).<br />" +
+          "✅ Use <ul> and <li> for lists.<br />" +
+          "✅ Format quotes inside <blockquote>.<br />" +
+          "✅ Include hyperlinks using <a href='#'>.[link]</a>.<br />" +
+          "✅ No triple backticks, no markdown—just clean, raw HTML.<br /><br />" +
+          "{context}";
 
       const qaPrompt = ChatPromptTemplate.fromMessages([
         [Role.System, systemPrompt],
@@ -293,7 +304,16 @@ console.log(answer.answer)
         disabled={isDisabled}
         {...form.register("message")}
       />
-      <Button variant="outline" type="submit" disabled={isDisabled}>
+      <Button
+        variant="outline"
+        type="submit"
+        disabled={
+          isLoadingRagChain ||
+          form.formState.isSubmitting ||
+          !ragChain ||
+          isLoadingAssistant
+        }
+      >
         {form.formState.isSubmitting ? (
           <Loader className="w-6 h-6 animate-spin" />
         ) : (
