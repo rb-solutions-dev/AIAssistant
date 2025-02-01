@@ -96,11 +96,7 @@ const CreateMessage = () => {
     }
   );
 
-  const {
-    data: ragChain,
-    isLoading: isLoadingRagChain,
-    error: ragChainError,
-  } = useSWR(
+  const { data: ragChain, isLoading: isLoadingRagChain } = useSWR(
     assistant ? `/api/chat/assistants/rag/${assistant.rag_file_path}` : null,
     async () => {
       const { data, error } = await supabase.storage
