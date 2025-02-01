@@ -234,3 +234,11 @@ html, body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.cl-organizationPreviewMainIdentifier {
+  @apply text-foreground; 
+}
+
+.cl-organizationSwitcherTrigger {
+  @apply text-foreground active:text-foreground hover:text-foreground; 
+}

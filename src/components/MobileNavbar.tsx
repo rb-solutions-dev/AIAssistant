@@ -4,12 +4,7 @@ import Link from "next/link";
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-import {
-  OrganizationSwitcher,
-  Protect,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { Home, Loader, MessageCircle } from "lucide-react";
 
 // utils
@@ -68,45 +63,6 @@ const MobileNavbar = () => {
         )}
         <span className="text-xs">Perfil</span>
       </div>
-      <Protect role="org:admin">
-        <div className="flex flex-col items-center justify-center gap-1 transition-all">
-          <OrganizationSwitcher
-            hidePersonal
-            hideSlug
-            appearance={{
-              elements: {
-                rootBox: {
-                  display: "flex",
-                  marginRight: "16px",
-                  marginLeft: "32px",
-                },
-                organizationListCreateOrganizationActionButton: {
-                  display: "none",
-                },
-                organizationSwitcherPopoverActionButton__createOrganization: {
-                  display: "none",
-                },
-                organizationSwitcherPopover: {
-                  display: "none",
-                },
-                organizationPreviewAvatarBox: {
-                  backgroundColor: "unset",
-                },
-                organizationSwitcherPopoverActions: {
-                  display: true ? "" : "none",
-                },
-                organizationSwitcherPopoverCard: {
-                  boxShadow: "none",
-                  borderStyle: "solid",
-                  borderColor: "#e2e8f0",
-                  borderWidth: "1px",
-                  borderRadius: "8px",
-                },
-              },
-            }}
-          />
-        </div>
-      </Protect>
     </div>
   );
 };
