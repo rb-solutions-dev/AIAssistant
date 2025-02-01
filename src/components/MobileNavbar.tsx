@@ -5,10 +5,8 @@ import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import {
-  OrganizationProfile,
   OrganizationSwitcher,
   Protect,
-  useOrganization,
   UserButton,
   useUser,
 } from "@clerk/nextjs";
@@ -21,9 +19,7 @@ const MobileNavbar = () => {
   const { theme } = useTheme();
   const pathname = usePathname();
   const { isLoaded } = useUser();
-  const { organization, isLoaded: isOrgLoaded } = useOrganization();
 
-  const isAdmin = isOrgLoaded ? organization?.adminDeleteEnabled : false;
   return (
     <div className="flex justify-around py-3">
       {[
