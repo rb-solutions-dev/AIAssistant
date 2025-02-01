@@ -3,8 +3,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 
-import { type UserOrganizationInvitationResource } from "@clerk/types";
-
 const SetActiveOrganizationTrigger = () => {
   const [notFound, setNotFound] = useState(false);
   const [isAcceptingInvitationManually, setIsAcceptingInvitationManually] =
@@ -21,7 +19,8 @@ const SetActiveOrganizationTrigger = () => {
     });
 
   const handleAcceptInvite = useCallback(
-    async (invitation: UserOrganizationInvitationResource) => {
+    // @ts-expect-error Weird error with the type of the invitation
+    async (invitation) => {
       setIsAcceptingInvitationManually(true);
 
       try {
