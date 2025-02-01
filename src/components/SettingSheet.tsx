@@ -1,4 +1,4 @@
-import { OrganizationSwitcher, Protect, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import {
@@ -37,11 +37,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 
 enum View {
   Cuenta = "Cuenta",
