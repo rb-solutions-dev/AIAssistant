@@ -74,7 +74,8 @@ const ChatsList = () => {
         {data.map((chat) => {
           const chatData = chat as unknown as Chat;
 
-          if (chatData.messages.length === 0) return null;
+          if (chatData.messages.length === 0 || !chatData.assistants)
+            return null;
           return (
             <div
               key={chatData.id}
@@ -95,10 +96,15 @@ const ChatsList = () => {
                 <p className="text-sm font-medium">
                   {chatData.assistants.name}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {chatData.messages[0].content.slice(0, 70)}
-                  {chatData.messages[0].content.length > 70 && "..."}
-                </p>
+                <div
+                  className="text-sm text-muted-foreground"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      chatData.messages[0].content.length > 70
+                        ? chatData.messages[0].content.slice(0, 70) + "..."
+                        : chatData.messages[0].content,
+                  }}
+                />
               </div>
               <p className="text-sm text-muted-foreground">
                 {format(

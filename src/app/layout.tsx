@@ -9,8 +9,12 @@ import MobileNavbar from "@/components/MobileNavbar";
 import ChatListener from "@/components/ChatListener";
 import { ThemeProvider } from "@/components/theme-provider";
 import SplashScreen from "@/components/splashScreen"; // Import the splash screen
+
 // interfaces
 import type { Metadata } from "next";
+
+// providers
+import ClerkOrganizationProxy from "@/app/ClerkProxy";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,33 +63,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
     <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en" suppressHydrationWarning>
         <head />
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SplashScreen /> {/* Show splash screen */}
-            <ChatListener />
-            <div className="flex flex-col h-screen flex-1 bg-background">
-              {/* Ensure children have space for the navbar */}
-              <div className="flex-1 overflow-y-auto pb-[80px]">{children}</div>
+          <ClerkOrganizationProxy>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <SplashScreen /> {/* Show splash screen */}
+              <ChatListener />
+              <div className="flex flex-col h-screen flex-1 bg-background">
+                {/* Ensure children have space for the navbar */}
+                <div className="flex-1 overflow-y-auto pb-[80px]">
+                  {children}
+                </div>
 
-              {/* Fixed Bottom Navbar */}
-              <div className="fixed bottom-0 right-0 border-t bg-background w-full z-10 h-[80px]">
-                <MobileNavbar />
+                {/* Fixed Bottom Navbar */}
+                <div className="fixed bottom-0 right-0 border-t bg-background w-full z-10 h-[80px]">
+                  <MobileNavbar />
+                </div>
               </div>
-            </div>
-
-            <Toaster />
-          </ThemeProvider>
+              <Toaster />
+            </ThemeProvider>
+          </ClerkOrganizationProxy>
         </body>
       </html>
     </ClerkProvider>

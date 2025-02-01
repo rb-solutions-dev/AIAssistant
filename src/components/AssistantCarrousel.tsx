@@ -28,18 +28,13 @@ const AssistantCarrousel = () => {
     isSignedIn ? "/api/assistants" : null,
     async () => {
       const { data } = await supabase.from("assistants").select();
+
       return data || [];
     },
     {
       fallbackData: [],
     }
   );
-
-  const displayedAssistants = isLoading
-    ? new Array(3).fill(null)
-    : assistants.length < 3
-    ? [...assistants, ...new Array(3 - assistants.length).fill(null)]
-    : assistants;
 
   return (
     <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
@@ -51,8 +46,15 @@ const AssistantCarrousel = () => {
       </div>
       <Carousel className="mt-8">
         <CarouselContent>
-          {displayedAssistants.map((assistant, index) =>
-            assistant ? (
+          {isLoading ? (
+            <>
+              <SkeletonAssistant />
+              <SkeletonAssistant />
+              <SkeletonAssistant />
+            </>
+          ) : null}
+          {assistants.map((assistant) => {
+            return (
               <CarouselItem
                 key={assistant.id}
                 className="basis-1/2 items-center justify-center flex flex-col gap-2 relative text-center"
@@ -70,10 +72,8 @@ const AssistantCarrousel = () => {
                 />
                 <p className="text-sm font-medium">{assistant.name}</p>
               </CarouselItem>
-            ) : (
-              <SkeletonAssistant key={index} />
-            )
-          )}
+            );
+          })}
         </CarouselContent>
       </Carousel>
     </div>
