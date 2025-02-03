@@ -89,7 +89,7 @@ const CreateMessage = () => {
     async () => {
       const { data } = await supabase
         .from("assistants")
-        .select("prompt, rag_file_path")
+        .select("prompt, rag_file_path, docs_qty")
         .match({ id })
         .single();
       return data;
@@ -110,17 +110,19 @@ const CreateMessage = () => {
       const text = await data.text();
 
       const docs = await textSplitter.createDocuments([text]);
-
+console.log(docs)
       const vectorStore = await MemoryVectorStore.fromDocuments(
         docs,
         new OpenAIEmbeddings({
           apiKey: OPEN_API_KEY,
         })
       );
+
+
       const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
         minSimilarityScore: 0.1, // Finds results with at least this similarity score
-        maxK: 17, // The maximum K value to use. Use it based to your chunk size to make sure you don't run out of tokens
-        kIncrement: 17, // How much to increase K by each time. It'll fetch N results, then N + kIncrement, then N + kIncrement * 2, etc.
+        maxK: assistant!.docs_qty, // The maximum K value to use. Use it based to your chunk size to make sure you don't run out of tokens
+        kIncrement: assistant!.docs_qty, // How much to increase K by each time. It'll fetch N results, then N + kIncrement, then N + kIncrement * 2, etc.
       });
 
       const contextualizeQSystemPrompt =
@@ -243,7 +245,7 @@ console.log(systemPrompt)
         )
         .join("\n"),
     });
-console.log(answer.context)
+console.log(answer.answer)
     const answerContent = answer.answer;
 
     await supabase
