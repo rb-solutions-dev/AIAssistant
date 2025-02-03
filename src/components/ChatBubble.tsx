@@ -16,6 +16,10 @@ type Message = {
 interface Props {
   message: Message;
   isLastMessage: boolean;
+  assistant: {
+    avatar_url: string;
+    name: string;
+  };
 }
 
 const AnimatedMessage = ({ message }: { message: Message }) => {
@@ -67,7 +71,7 @@ const AnimatedMessage = ({ message }: { message: Message }) => {
   );
 };
 
-const ChatBubble = ({ message }: Props) => {
+const ChatBubble = ({ message, assistant }: Props) => {
   const isHuman = message.role === "human";
   const isPlaceholder = message.content === "ANSWER_PLACEHOLDER";
 
@@ -76,6 +80,8 @@ const ChatBubble = ({ message }: Props) => {
   const shouldAnimate =
     messageCreatedLast10Seconds && message.role === Role.System;
 
+  console.log(assistant);
+
   return (
     <>
       <div
@@ -83,11 +89,11 @@ const ChatBubble = ({ message }: Props) => {
       >
         {isHuman ? null : (
           <Image
-            src="/be.png"
+            src={assistant.avatar_url}
             alt="logo"
             width={40}
             height={40}
-            className="self-start rounded-full"
+            className="self-start rounded-full morena-image"
           />
         )}
         <>

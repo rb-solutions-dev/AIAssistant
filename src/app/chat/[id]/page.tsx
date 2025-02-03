@@ -25,7 +25,7 @@ const ChatPage = () => {
     async () => {
       const { data } = await supabase
         .from("conversations")
-        .select("id")
+        .select(`*, assistants(*)`)
         .match({ assistant_id: id })
         .single();
 
@@ -63,12 +63,13 @@ const ChatPage = () => {
         if (message.content === "") return null;
 
         const isLastMessage = message.id === data[data.length - 1].id;
-
+        const assistant = conversation?.assistants;
         return (
           <ChatBubble
             key={message.id}
             message={message}
             isLastMessage={isLastMessage}
+            assistant={assistant}
           />
         );
       })}
