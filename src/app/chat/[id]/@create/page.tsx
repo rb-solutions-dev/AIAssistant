@@ -89,7 +89,7 @@ const CreateMessage = () => {
     async () => {
       const { data } = await supabase
         .from("assistants")
-        .select("prompt, rag_file_path, docs_qty")
+        .select("prompt, rag_file_path, docs_qty, avatar_url")
         .match({ id })
         .single();
       return data;
