@@ -9,11 +9,11 @@ import { Loader, Send } from "lucide-react";
 import { useSWRConfig } from "swr";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { createRetrievalChain } from "langchain/chains/retrieval";
+import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
 import {
   ChatPromptTemplate,
   MessagesPlaceholder,
@@ -76,32 +76,39 @@ const CreateMessage = () => {
     async () => {
       const { data } = await supabase
         .from("conversations")
-        .select("id")
+        .select(
+          `
+           id,
+           assistants(
+              id,
+              prompt,
+              rag_file_path,
+              docs_qty
+            )
+          `
+        )
         .match({ assistant_id: id })
         .single();
 
-      return data;
-    }
-  );
+      if (!data) {
+        return null;
+      }
 
-  const { data: assistant, isLoading: isLoadingAssistant } = useSWR(
-    `/api/chat/assistants/${id}`,
-    async () => {
-      const { data } = await supabase
-        .from("assistants")
-        .select("prompt, rag_file_path, docs_qty")
-        .match({ id })
-        .single();
-      return data;
+      return {
+        id: data.id,
+        assistants: data.assistants[0],
+      };
     }
   );
 
   const { data: ragChain, isLoading: isLoadingRagChain } = useSWR(
-    assistant ? `/api/chat/assistants/rag/${assistant.rag_file_path}` : null,
+    conversation
+      ? `/api/chat/assistants/rag/${conversation.assistants.rag_file_path}`
+      : null,
     async () => {
       const { data, error } = await supabase.storage
         .from("rag_files")
-        .download(assistant!.rag_file_path);
+        .download(conversation!.assistants.rag_file_path);
 
       if (error) {
         return null;
@@ -119,9 +126,9 @@ const CreateMessage = () => {
       );
 
       const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
-        minSimilarityScore: 0.1, // Finds results with at least this similarity score
-        maxK: assistant?.docs_qty ?? 17, // The maximum K value to use. Use it based to your chunk size to make sure you don't run out of tokens
-        kIncrement: assistant?.docs_qty ?? 17, // How much to increase K by each time. It'll fetch N results, then N + kIncrement, then N + kIncrement * 2, etc.
+        minSimilarityScore: 0.1,
+        maxK: conversation!.assistants.docs_qty ?? 17,
+        kIncrement: conversation!.assistants.docs_qty ?? 17,
       });
 
       const contextualizeQSystemPrompt =
@@ -143,11 +150,7 @@ const CreateMessage = () => {
         rephrasePrompt: contextualizeQPrompt,
       });
 
-      const systemPrompt =
-      assistant!.prompt +
-      "{context}";
-
-
+      const systemPrompt = conversation!.assistants.prompt + "{context}";
 
       const qaPrompt = ChatPromptTemplate.fromMessages([
         [Role.System, systemPrompt],
@@ -277,10 +280,7 @@ const CreateMessage = () => {
   };
 
   const isDisabled =
-    isLoadingRagChain ||
-    form.formState.isSubmitting ||
-    !ragChain ||
-    isLoadingAssistant;
+    isLoadingRagChain || form.formState.isSubmitting || !ragChain;
 
   return (
     <form
@@ -296,12 +296,7 @@ const CreateMessage = () => {
       <Button
         variant="outline"
         type="submit"
-        disabled={
-          isLoadingRagChain ||
-          form.formState.isSubmitting ||
-          !ragChain ||
-          isLoadingAssistant
-        }
+        disabled={isLoadingRagChain || form.formState.isSubmitting || !ragChain}
       >
         {form.formState.isSubmitting ? (
           <Loader className="w-6 h-6 animate-spin" />

@@ -80,8 +80,6 @@ const ChatBubble = ({ message, assistant }: Props) => {
   const shouldAnimate =
     messageCreatedLast10Seconds && message.role === Role.System;
 
-  console.log(assistant);
-
   return (
     <>
       <div
