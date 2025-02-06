@@ -14,12 +14,12 @@ const HomePage = () => {
 
 const { theme } =useTheme();
 
-const logoImage = theme === 'dark'? '/icons/ios/120_dark2.png' : '/icons/ios/120.png'
+const logoImage = theme === 'dark'? '/icons/ios/120_dark2.png' : '/icons/ios/512.png'
    
 
   return (
     <>
-      <div className="px-4 py-4 border ">
+      <div className="px-4 py-4  ">
         <div className="flex justify-between items-center ">
           <h1 className="text-2xl font-extrabold">Bienvenido!</h1>
           <div className="flex items-center gap-2">
@@ -60,9 +60,9 @@ const logoImage = theme === 'dark'? '/icons/ios/120_dark2.png' : '/icons/ios/120
             
             src={logoImage} // Conditional image based on dark mode
             alt="LexIA"
-            className="rounded-full "
-            width={120}
-            height={120}
+            className="rounded-full w-32 w-32"
+            width={512}
+            height={512}
           />
         </div>
         <div className="mt-4">
