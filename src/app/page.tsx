@@ -14,7 +14,7 @@ const HomePage = () => {
 
 const { theme } =useTheme();
 
-const logoImage = theme === 'dark'? '/icons/ios/80_dark.png' : '/icons/ios/120.png'
+const logoImage = theme === 'dark'? '/icons/ios/120_dark.png' : '/icons/ios/120.png'
    
 
   return (
