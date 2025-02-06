@@ -9,12 +9,18 @@ import InstallPWA from "@/components/InstallPWA";
 import LastMessage from "@/components/LastMessage";
 import SettingSheet from "@/components/SettingSheet";
 import AssistantCarrousel from "@/components/AssistantCarrousel";
-
+import { useTheme } from "next-themes";
 const HomePage = () => {
+
+const { theme } =useTheme();
+
+const logoImage = theme === 'dark'? '/icons/ios/2024_dark.png' : '/icons/ios/80.png'
+   
+
   return (
     <>
-      <div className="px-4 py-4">
-        <div className="flex justify-between items-center">
+      <div className="px-4 py-4 border ">
+        <div className="flex justify-between items-center ">
           <h1 className="text-2xl font-extrabold">Bienvenido!</h1>
           <div className="flex items-center gap-2">
             <Protect role="org:admin">
@@ -51,7 +57,8 @@ const HomePage = () => {
 
         <div className="flex justify-center items-center">
           <Image
-            src="/icons/ios/80.png"
+            
+            src={logoImage} // Conditional image based on dark mode
             alt="LexIA"
             className="rounded-full w-20 h-20"
             width={80}
@@ -66,10 +73,10 @@ const HomePage = () => {
           <AssistantCarrousel />
         </div>
 
-        <div className="mt-8 mb-20">
+        <div className="mt-8 mb-20 drop-shadow-xl ">
           <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Herramientas</h2>
+              <h2 className="text-xl font-semibold">Herramientas opcionales</h2>
 
               <Button variant="link" className="text-sm text-primary">
                 Ver Todas

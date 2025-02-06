@@ -16,7 +16,7 @@ const MobileNavbar = () => {
   const { isLoaded } = useUser();
 
   return (
-    <div className="flex justify-around py-3">
+    <div className="flex justify-around py-3 ">
       {[
         {
           name: "Inicio",

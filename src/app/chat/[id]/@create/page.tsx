@@ -42,7 +42,6 @@ type ChatMessage = {
 };
 
 const OPEN_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-
 const llm = new ChatOpenAI({
   model: "gpt-4o-mini",
   apiKey: OPEN_API_KEY,
@@ -125,6 +124,11 @@ const CreateMessage = () => {
         })
       );
 
+  
+      
+
+
+
       const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
         minSimilarityScore: 0.1,
         maxK: conversation!.assistants.docs_qty ?? 17,
@@ -150,7 +154,8 @@ const CreateMessage = () => {
         rephrasePrompt: contextualizeQPrompt,
       });
 
-      const systemPrompt = conversation!.assistants.prompt + "{context}";
+      const systemPrompt = conversation!.assistants.prompt + 
+      "{context}"
 
       const qaPrompt = ChatPromptTemplate.fromMessages([
         [Role.System, systemPrompt],
@@ -248,6 +253,7 @@ const CreateMessage = () => {
         )
         .join("\n"),
     });
+
 
     const answerContent = answer.answer;
 

@@ -37,7 +37,7 @@ const AssistantCarrousel = () => {
   );
 
   return (
-    <div className="bg-accent rounded-xl p-4 border border-border shadow-sm">
+    <div className="bg-accent rounded-xl p-4 border border-border drop-shadow-xl">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Asistentes</h2>
         <Link href="/chats" className="text-sm text-primary">
