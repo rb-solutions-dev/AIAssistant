@@ -67,7 +67,7 @@ const LastMessage = () => {
 
   const message = data as unknown as LastMessage;
 
-  if (!message.conversations) return null;
+  if (!message.conversations || !message.conversations.assistants) return null;
 
   return (
     <div className="bg-accent rounded-xl p-4 border border-border shadow-sm drop-shadow-xl">
