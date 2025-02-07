@@ -9,6 +9,7 @@ import useSupabase from "@/lib/supabase.client";
 
 // components
 import { buttonVariants } from "./ui/button";
+import { Client, useIsClient } from "@/hooks/useIsClient";
 
 interface Assistant {
   id: number;
@@ -31,6 +32,7 @@ interface LastMessage {
 const LastMessage = () => {
   const supabase = useSupabase();
   const { isSignedIn } = useUser();
+  const isTexas = useIsClient(Client.Texas);
 
   const { data, isLoading } = useSWR(
     isSignedIn ? "/api/last-message" : null,
