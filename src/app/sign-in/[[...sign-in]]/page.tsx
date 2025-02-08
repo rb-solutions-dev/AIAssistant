@@ -11,9 +11,11 @@ export default function Home() {
     redirect("/");
   }
 
+  const path = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL || "/sign-in";
+
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <SignIn />
+      <SignIn path={path} />
     </div>
   );
 }
