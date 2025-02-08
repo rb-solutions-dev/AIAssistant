@@ -76,7 +76,7 @@ const OrganizationProxy = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { isLoaded, organization } = useOrganization();
 
-  if (pathname === "/sign-in") {
+  if (pathname.startsWith("/sign-in")) {
     return <>{children}</>;
   }
 
