@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
-import { usePathname } from "next/navigation";
 
 const SetActiveOrganizationTrigger = () => {
   const [notFound, setNotFound] = useState(false);
@@ -73,12 +72,7 @@ const SetActiveOrganizationTrigger = () => {
 };
 
 const OrganizationProxy = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
   const { isLoaded, organization } = useOrganization();
-
-  if (pathname.startsWith("/sign-in")) {
-    return <>{children}</>;
-  }
 
   if (isLoaded) {
     if (organization === null) {
