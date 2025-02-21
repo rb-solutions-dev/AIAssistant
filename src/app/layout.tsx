@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "LexIA",
     images: [
       {
-        url: "/icons/ios/10244.png", // Make sure this file exists in `/public`
+        url: "/icons/ios/1024.png", // Make sure this file exists in `/public`
         width: 1024,
         height: 1024,
         alt: "LexIA Logo",
